@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description:
     "Discover timeless elegance with Eve Whites premium fashion collection. Minimalist designs, premium quality.",
   keywords: "fashion, minimalist, luxury, clothing, women, elegant",
-    generator: 'v0.dev'
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
 }
 
 export default function RootLayout({
@@ -23,11 +23,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} antialiased`}>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+      </head>
+      <body className={`${inter.className} antialiased overflow-x-hidden`}>
         <CartProvider>
-          <div className="min-h-screen flex flex-col">
+          <div className="min-h-screen flex flex-col w-full max-w-full">
             <Header />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1 w-full max-w-full overflow-x-hidden">{children}</main>
             <Footer />
           </div>
         </CartProvider>

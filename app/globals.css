@@ -5,20 +5,27 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   body {
-    @apply bg-white text-black;
+    @apply bg-white text-black overflow-x-hidden;
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  * {
+    box-sizing: border-box;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-black text-white px-6 sm:px-8 py-2 sm:py-3 font-medium tracking-wide uppercase text-xs sm:text-sm hover:bg-gray-800 transition-all duration-300 transform hover:scale-105;
+    @apply bg-black text-white px-4 sm:px-6 lg:px-8 py-2 sm:py-3 font-medium tracking-wide uppercase text-xs sm:text-sm hover:bg-gray-800 transition-all duration-300 transform hover:scale-105;
   }
 
   .btn-secondary {
-    @apply border border-black text-black px-6 sm:px-8 py-2 sm:py-3 font-medium tracking-wide uppercase text-xs sm:text-sm hover:bg-black hover:text-white transition-all duration-300;
+    @apply border border-black text-black px-4 sm:px-6 lg:px-8 py-2 sm:py-3 font-medium tracking-wide uppercase text-xs sm:text-sm hover:bg-black hover:text-white transition-all duration-300;
   }
 
   .product-card {
@@ -40,14 +47,6 @@
 
   .slide-up {
     animation: slideUp 0.8s ease-out forwards;
-  }
-
-  /* Mobile-specific fixes */
-  @media (max-width: 640px) {
-    .glass-effect {
-      backdrop-filter: blur(8px);
-      background: rgba(255, 255, 255, 0.95);
-    }
   }
 }
 
@@ -104,4 +103,28 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #333;
+}
+
+/* Prevent horizontal overflow */
+.overflow-x-hidden {
+  overflow-x: hidden !important;
+}
+
+/* Ensure all containers respect viewport width */
+.w-full {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Mobile-specific fixes */
+@media (max-width: 640px) {
+  .glass-effect {
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  /* Ensure no element exceeds viewport width */
+  * {
+    max-width: 100vw;
+  }
 }

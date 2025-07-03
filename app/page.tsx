@@ -71,37 +71,36 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <div className="pt-16 lg:pt-20 min-h-screen flex items-center justify-center">
+      <div className="pt-16 lg:pt-20 min-h-screen flex items-center justify-center w-full">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
       </div>
     )
   }
 
   return (
-    <div className="pt-16 lg:pt-20">
+    <div className="pt-16 lg:pt-20 w-full max-w-full overflow-x-hidden">
       {/* Hero Carousel */}
-      <section className="relative h-screen overflow-hidden">
+      <section className="relative h-screen overflow-hidden w-full">
         {heroSlides.map((slide, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentSlide ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute inset-0 transition-opacity duration-1000 w-full ${index === currentSlide ? "opacity-100" : "opacity-0"
+              }`}
           >
             <Image
               src={slide.image || "/placeholder.svg"}
               alt={slide.title}
               fill
-              className="object-cover"
+              className="object-cover w-full h-full"
               priority={index === 0}
             />
             <div className="absolute inset-0 bg-black/30" />
-            <div className="absolute inset-0 flex items-center justify-center text-center text-white">
-              <div className="max-w-4xl px-4">
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-light tracking-widest mb-4 fade-in">
+            <div className="absolute inset-0 flex items-center justify-center text-center text-white px-4">
+              <div className="max-w-4xl w-full">
+                <h1 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-light tracking-widest mb-4 fade-in">
                   {slide.title}
                 </h1>
-                <p className="text-lg md:text-xl mb-8 fade-in" style={{ animationDelay: "0.2s" }}>
+                <p className="text-sm sm:text-lg md:text-xl mb-8 fade-in" style={{ animationDelay: "0.2s" }}>
                   {slide.subtitle}
                 </p>
                 <Link href="/shop" className="btn-primary fade-in" style={{ animationDelay: "0.4s" }}>
@@ -117,9 +116,8 @@ export default function HomePage() {
           {heroSlides.map((_, index) => (
             <button
               key={index}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentSlide ? "bg-white" : "bg-white/50"
-              }`}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentSlide ? "bg-white" : "bg-white/50"
+                }`}
               onClick={() => setCurrentSlide(index)}
             />
           ))}
@@ -127,17 +125,17 @@ export default function HomePage() {
       </section>
 
       {/* Featured Collections */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 w-full">
+        <div className="max-w-7xl mx-auto w-full">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-light tracking-widest mb-4">SIGNATURE COLLECTIONS</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-widest mb-4">SIGNATURE COLLECTIONS</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto px-4">
               Discover our exquisite bridal and evening wear collections, where each piece is a masterpiece of
               craftsmanship and elegance, designed for life's most precious moments.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 w-full">
             {featuredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -152,8 +150,8 @@ export default function HomePage() {
       </section>
 
       {/* Collections Showcase */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 bg-gray-50 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             {/* Bridal Collection */}
             <div className="text-center">
@@ -165,8 +163,8 @@ export default function HomePage() {
                   className="object-cover hover:scale-105 transition-transform duration-700"
                 />
               </div>
-              <h3 className="text-2xl font-light tracking-widest mb-4">BRIDAL COLLECTION</h3>
-              <p className="text-gray-600 mb-6 leading-relaxed">
+              <h3 className="text-xl sm:text-2xl font-light tracking-widest mb-4">BRIDAL COLLECTION</h3>
+              <p className="text-gray-600 mb-6 leading-relaxed px-4">
                 Exquisite bridal gowns crafted for your most important day. Each dress embodies timeless elegance with
                 intricate details and luxurious fabrics.
               </p>
@@ -185,8 +183,8 @@ export default function HomePage() {
                   className="object-cover hover:scale-105 transition-transform duration-700"
                 />
               </div>
-              <h3 className="text-2xl font-light tracking-widest mb-4">EVENING COLLECTION</h3>
-              <p className="text-gray-600 mb-6 leading-relaxed">
+              <h3 className="text-xl sm:text-2xl font-light tracking-widest mb-4">EVENING COLLECTION</h3>
+              <p className="text-gray-600 mb-6 leading-relaxed px-4">
                 Sophisticated evening wear for special occasions. Designed to make you feel confident and radiant at
                 every elegant affair.
               </p>
@@ -199,11 +197,11 @@ export default function HomePage() {
       </section>
 
       {/* Brand Story */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-light tracking-widest mb-6">OUR PHILOSOPHY</h2>
+            <div className="px-4">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-widest mb-6">OUR PHILOSOPHY</h2>
               <p className="text-gray-600 mb-6 leading-relaxed">
                 At Eve Whites, we believe that every woman deserves to feel extraordinary. Our collections are
                 meticulously crafted to celebrate femininity, elegance, and the unique beauty of each individual.
@@ -229,19 +227,19 @@ export default function HomePage() {
       </section>
 
       {/* Newsletter */}
-      <section className="py-20 bg-black text-white">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-light tracking-widest mb-4">STAY ENCHANTED</h2>
+      <section className="py-20 bg-black text-white w-full">
+        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 w-full">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-widest mb-4">STAY ENCHANTED</h2>
           <p className="text-gray-300 mb-8">
             Be the first to discover our latest collections, exclusive designs, and special moments.
           </p>
-          <div className="flex flex-col sm:flex-row max-w-md mx-auto">
+          <div className="flex flex-col sm:flex-row max-w-md mx-auto w-full">
             <input
               type="email"
               placeholder="Enter your email"
-              className="flex-1 px-6 py-4 bg-transparent border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-white"
+              className="flex-1 px-6 py-4 bg-transparent border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-white w-full"
             />
-            <button className="px-8 py-4 bg-white text-black font-medium tracking-wide hover:bg-gray-200 transition-colors">
+            <button className="px-8 py-4 bg-white text-black font-medium tracking-wide hover:bg-gray-200 transition-colors w-full sm:w-auto mt-2 sm:mt-0">
               SUBSCRIBE
             </button>
           </div>
