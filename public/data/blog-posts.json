@@ -1,0 +1,46 @@
+[
+  {
+    "id": "1",
+    "title": "The Art of Minimalist Dressing",
+    "excerpt": "Discover how to build a capsule wardrobe with timeless pieces that work for every occasion.",
+    "image": "/placeholder.svg?height=400&width=600",
+    "date": "2024-01-15",
+    "category": "Style Guide",
+    "readTime": "5 min read",
+    "author": "Sarah Chen",
+    "content": "<p>In a world filled with fast fashion and ever-changing trends, the art of minimalist dressing offers a refreshing approach to personal style. At Eve Whites, we believe that true elegance lies not in the quantity of pieces in your wardrobe, but in the quality and versatility of each carefully chosen item.</p><h2>What is Minimalist Dressing?</h2><p>Minimalist dressing is about curating a wardrobe of essential pieces that work harmoniously together. It's about choosing quality over quantity, investing in timeless designs that transcend seasonal trends, and creating a personal uniform that reflects your individual style while simplifying your daily routine.</p><h2>Building Your Capsule Wardrobe</h2><p>The foundation of minimalist dressing is the capsule wardrobe – a collection of essential items that can be mixed and matched to create numerous outfits. Start with these key pieces:</p><ul><li>A well-tailored white shirt</li><li>A classic blazer in black or navy</li><li>Perfectly fitted trousers</li><li>A little black dress</li><li>Quality knitwear in neutral tones</li></ul><h2>The Power of Neutral Colors</h2><p>Neutral colors form the backbone of a minimalist wardrobe. Black, white, gray, beige, and navy create a cohesive palette that ensures every piece works with every other piece. This doesn't mean your wardrobe has to be boring – texture, silhouette, and subtle details add interest and personality.</p><h2>Quality Over Quantity</h2><p>When building a minimalist wardrobe, it's essential to invest in quality pieces that will stand the test of time. Look for natural fabrics, excellent construction, and timeless silhouettes. While the initial investment may be higher, cost-per-wear makes quality pieces more economical in the long run.</p><p>Minimalist dressing is ultimately about freedom – freedom from decision fatigue, freedom from clutter, and freedom to express your authentic self through carefully chosen pieces that make you feel confident and comfortable.</p>"
+  },
+  {
+    "id": "2",
+    "title": "Sustainable Fashion: Our Commitment",
+    "excerpt": "Learn about our sustainable practices and how we're working towards a more ethical fashion industry.",
+    "image": "/placeholder.svg?height=400&width=600",
+    "date": "2024-01-10",
+    "category": "Sustainability",
+    "readTime": "7 min read",
+    "author": "Emma Wilson",
+    "content": "<p>Sustainability is at the heart of everything we do at Eve Whites. We believe that fashion should not come at the expense of our planet or the people who make our clothes.</p><h2>Our Sustainable Practices</h2><p>From sourcing eco-friendly materials to ensuring fair labor practices, we are committed to making a positive impact on the fashion industry.</p>"
+  },
+  {
+    "id": "3",
+    "title": "Spring Essentials: What to Wear Now",
+    "excerpt": "Our curated selection of must-have pieces for the new season.",
+    "image": "/placeholder.svg?height=400&width=600",
+    "date": "2024-01-05",
+    "category": "Seasonal",
+    "readTime": "4 min read",
+    "author": "Lisa Chen",
+    "content": "<p>Spring is here, and it's time to refresh your wardrobe with pieces that capture the season's optimistic spirit while maintaining our signature minimalist aesthetic.</p><h2>Key Pieces for Spring</h2><p>Discover the essential items that will carry you through the season in style.</p>"
+  },
+  {
+    "id": "4",
+    "title": "Behind the Scenes: Our Design Process",
+    "excerpt": "Take a look at how we create our collections, from initial concept to final product.",
+    "image": "/placeholder.svg?height=400&width=600",
+    "date": "2023-12-28",
+    "category": "Behind the Scenes",
+    "readTime": "6 min read",
+    "author": "Michael Torres",
+    "content": "<p>Ever wondered how our collections come to life? Take a behind-the-scenes look at our design process, from initial inspiration to the final product.</p><h2>From Concept to Creation</h2><p>Our design journey begins with inspiration drawn from architecture, art, and the everyday moments that define modern life.</p>"
+  }
+]

@@ -1,0 +1,78 @@
+[
+  {
+    "id": "1",
+    "name": "Ruby's Touch",
+    "price": 2899,
+    "category": "bridal",
+    "images": [
+      "/images/products/rubys-touch-1.jpg",
+      "/images/products/rubys-touch-2.jpg",
+      "/images/products/rubys-touch-3.jpg",
+      "/images/products/rubys-touch-detail.jpg",
+      "/images/products/rubys-touch-silhouette.jpg"
+    ],
+    "description": "An epitome of elegance and allure. Ruby's Touch features a sheer neckline and sleeves adorned with floral lace appliqués, along with a beautiful mermaid cut that contours the body gracefully. The hemline is ornamented with delicate ruffles and subtle pink embellishments, lending a feminine charm to the overall design.",
+    "sizes": ["XS", "S", "M", "L", "XL"],
+    "featured": true,
+    "collection": "Signature Bridal"
+  },
+  {
+    "id": "2",
+    "name": "Étoile Satinée",
+    "price": 3299,
+    "category": "bridal",
+    "images": [
+      "/images/products/etoile-satinee-1.jpg",
+      "/images/products/etoile-satinee-2.jpg",
+      "/images/products/etoile-satinee-detail.jpg"
+    ],
+    "description": "Featuring a mesmerizing mermaid silhouette that entrancingly accentuates the figure, flowing into a graceful train. The upper design is adorned with a soft bow shaped draped neckline and the subtle embellishments add a touch of regal sophistication.",
+    "sizes": ["XS", "S", "M", "L", "XL"],
+    "featured": true,
+    "collection": "Couture Evening"
+  },
+  {
+    "id": "3",
+    "name": "Classic Elegance",
+    "price": 2599,
+    "category": "evening",
+    "images": ["/images/products/classic-elegance-1.jpg", "/images/products/classic-elegance-2.jpg"],
+    "description": "A timeless white evening gown with clean lines and sophisticated draping. Features a fitted bodice with subtle gathering and a flowing train that creates an effortlessly elegant silhouette.",
+    "sizes": ["XS", "S", "M", "L", "XL"],
+    "featured": true,
+    "collection": "Timeless Collection"
+  },
+  {
+    "id": "4",
+    "name": "Pearl Cascade",
+    "price": 3599,
+    "category": "bridal",
+    "images": ["/images/products/rubys-touch-1.jpg", "/images/products/rubys-touch-3.jpg"],
+    "description": "Exquisite bridal gown featuring intricate lace appliqués and delicate pearl detailing. The long sleeves and high neckline create a sophisticated look while the fitted silhouette flows into a stunning train.",
+    "sizes": ["XS", "S", "M", "L"],
+    "featured": false,
+    "collection": "Signature Bridal"
+  },
+  {
+    "id": "5",
+    "name": "Moonlight Serenade",
+    "price": 2799,
+    "category": "evening",
+    "images": ["/images/products/classic-elegance-1.jpg"],
+    "description": "A captivating evening gown that embodies modern romance. The sleek silhouette and dramatic train create an unforgettable presence for special occasions.",
+    "sizes": ["XS", "S", "M", "L", "XL"],
+    "featured": false,
+    "collection": "Evening Romance"
+  },
+  {
+    "id": "6",
+    "name": "Celestial Dreams",
+    "price": 3899,
+    "category": "bridal",
+    "images": ["/images/products/etoile-satinee-detail.jpg", "/images/products/etoile-satinee-1.jpg"],
+    "description": "A breathtaking bridal masterpiece adorned with celestial-inspired beadwork and crystals. The sheer bodice creates an ethereal effect while maintaining elegant sophistication.",
+    "sizes": ["XS", "S", "M", "L"],
+    "featured": true,
+    "collection": "Couture Bridal"
+  }
+]
