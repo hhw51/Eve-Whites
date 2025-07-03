@@ -187,7 +187,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         <div className="space-y-2">
           <h3 className="font-medium text-sm tracking-wide uppercase">{product.name}</h3>
-          <p className="text-gray-600 text-sm">${product.price.toLocaleString()}</p>
+          <p className="text-gray-600 text-sm">PKR. {product.price.toLocaleString()}</p>
         </div>
       </Link>
     </div>

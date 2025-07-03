@@ -39,7 +39,7 @@ export default function CartPage() {
                 <div className="flex-1 space-y-2">
                   <h3 className="font-medium">{item.name}</h3>
                   <p className="text-gray-600 text-sm">Size: {item.size}</p>
-                  <p className="font-medium">${item.price}</p>
+                  <p className="font-medium">PKR. {item.price}</p>
 
                   <div className="flex items-center space-x-3">
                     <button
@@ -59,7 +59,7 @@ export default function CartPage() {
                 </div>
 
                 <div className="text-right">
-                  <p className="font-medium mb-2">${(item.price * item.quantity).toFixed(2)}</p>
+                  <p className="font-medium mb-2">PKR. {(item.price * item.quantity).toFixed(2)}</p>
                   <button
                     onClick={() => removeItem(item.id, item.size)}
                     className="p-1 text-gray-400 hover:text-red-500 transition-colors"
@@ -78,7 +78,7 @@ export default function CartPage() {
             <div className="space-y-3 mb-6">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>${total.toFixed(2)}</span>
+                <span>PKR. {total.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Shipping</span>
@@ -86,7 +86,7 @@ export default function CartPage() {
               </div>
               <div className="border-t pt-3 flex justify-between font-medium">
                 <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>PKR. {total.toFixed(2)}</span>
               </div>
             </div>
 

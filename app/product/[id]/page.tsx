@@ -132,7 +132,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
           <div className="space-y-6">
             <div>
               <h1 className="text-3xl md:text-4xl font-light tracking-widest mb-2">{product.name}</h1>
-              <p className="text-2xl font-medium">${product.price.toLocaleString()}</p>
+              <p className="text-2xl font-medium">PKR. {product.price.toLocaleString()}</p>
             </div>
 
             <p className="text-gray-600 leading-relaxed">{product.description}</p>

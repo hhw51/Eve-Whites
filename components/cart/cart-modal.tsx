@@ -61,7 +61,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                     <div className="flex-1 min-w-0">
                       <h4 className="font-medium text-sm truncate">{item.name}</h4>
                       <p className="text-gray-600 text-xs">Size: {item.size}</p>
-                      <p className="font-medium text-sm">${item.price.toLocaleString()}</p>
+                      <p className="font-medium text-sm">PKR. {item.price.toLocaleString()}</p>
 
                       <div className="flex items-center space-x-2 mt-2">
                         <button
@@ -93,7 +93,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
               <div className="border-t pt-4">
                 <div className="flex justify-between items-center mb-4">
                   <span className="font-medium">Total:</span>
-                  <span className="font-medium text-lg">${total.toLocaleString()}</span>
+                    <span className="font-medium text-lg">PKR. {total.toLocaleString()}</span>
                 </div>
 
                 <div className="space-y-3">
