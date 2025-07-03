@@ -25,11 +25,10 @@ export default function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "glass-effect shadow-lg" : "bg-white/90"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "glass-effect shadow-lg" : "bg-white/90"
+          }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
             <Link href="/" className="text-2xl lg:text-3xl font-light tracking-widest">
@@ -85,21 +84,41 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="lg:hidden bg-white border-t">
-            <div className="px-4 py-6 space-y-4">
-              <Link href="/shop" className="block text-lg font-medium tracking-wide">
+          <div className="lg:hidden bg-white border-t absolute top-full left-0 right-0 shadow-lg">
+            <div className="px-4 py-4 space-y-3 max-w-full">
+              <Link
+                href="/shop"
+                className="block text-base font-medium tracking-wide py-2 border-b border-gray-100 last:border-b-0"
+                onClick={() => setIsMenuOpen(false)}
+              >
                 SHOP
               </Link>
-              <Link href="/about" className="block text-lg font-medium tracking-wide">
+              <Link
+                href="/about"
+                className="block text-base font-medium tracking-wide py-2 border-b border-gray-100 last:border-b-0"
+                onClick={() => setIsMenuOpen(false)}
+              >
                 ABOUT
               </Link>
-              <Link href="/blog" className="block text-lg font-medium tracking-wide">
+              <Link
+                href="/blog"
+                className="block text-base font-medium tracking-wide py-2 border-b border-gray-100 last:border-b-0"
+                onClick={() => setIsMenuOpen(false)}
+              >
                 JOURNAL
               </Link>
-              <Link href="/contact" className="block text-lg font-medium tracking-wide">
+              <Link
+                href="/contact"
+                className="block text-base font-medium tracking-wide py-2 border-b border-gray-100 last:border-b-0"
+                onClick={() => setIsMenuOpen(false)}
+              >
                 CONTACT
               </Link>
-              <Link href="/account" className="block text-lg font-medium tracking-wide">
+              <Link
+                href="/account"
+                className="block text-base font-medium tracking-wide py-2 border-b border-gray-100 last:border-b-0"
+                onClick={() => setIsMenuOpen(false)}
+              >
                 ACCOUNT
               </Link>
               <button
@@ -107,9 +126,9 @@ export default function Header() {
                   setIsCartModalOpen(true)
                   setIsMenuOpen(false)
                 }}
-                className="flex items-center space-x-2 text-lg font-medium tracking-wide"
+                className="flex items-center space-x-2 text-base font-medium tracking-wide py-2 w-full text-left"
               >
-                <ShoppingBag className="w-5 h-5" />
+                <ShoppingBag className="w-4 h-4" />
                 <span>CART ({itemCount})</span>
               </button>
             </div>
