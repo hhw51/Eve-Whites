@@ -6,6 +6,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useCart } from "@/components/cart/cart-context"
 
+
 interface CartModalProps {
   isOpen: boolean
   onClose: () => void
