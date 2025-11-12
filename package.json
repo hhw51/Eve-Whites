@@ -27,7 +27,7 @@
     "react-native": "latest",
     "shadcn": "latest",
     "tailwind-merge": "^2.5.5",
-    "three": "^0.158.0"
+    "three": "^0.168.0"
   },
   "devDependencies": {
     "@types/node": "^22",
