@@ -8,10 +8,8 @@ import ProductCard from "@/components/product/product-card"
 interface Product {
   id: string
   name: string
-  price: number
   images: string[]
   description: string
-  sizes: string[]
   featured: boolean
   collection: string
 }
@@ -20,6 +18,7 @@ export default function HomePage() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [notificationDismissed, setNotificationDismissed] = useState(false)
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -79,13 +78,31 @@ export default function HomePage() {
 
   return (
     <div className="pt-16 lg:pt-20 w-full max-w-full overflow-x-hidden">
+      {!notificationDismissed && (
+        <div className="fixed top-20 left-0 right-0 bg-black text-white z-40 px-4 py-4 md:py-3">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <p className="text-sm md:text-base tracking-wide">
+              All our pieces are exclusively <span className="font-medium">made-to-order</span> with a minimum delivery
+              time of <span className="font-medium">2-3 months</span>
+            </p>
+            <button
+              onClick={() => setNotificationDismissed(true)}
+              className="ml-4 text-gray-300 hover:text-white transition-colors"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Hero Carousel */}
-      <section className="relative h-screen overflow-hidden w-full">
+      <section className={`relative h-screen overflow-hidden w-full ${!notificationDismissed ? "mt-16" : ""}`}>
         {heroSlides.map((slide, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 w-full ${index === currentSlide ? "opacity-100" : "opacity-0"
-              }`}
+            className={`absolute inset-0 transition-opacity duration-1000 w-full ${
+              index === currentSlide ? "opacity-100" : "opacity-0"
+            }`}
           >
             <Image
               src={slide.image || "/placeholder.svg"}
@@ -116,8 +133,9 @@ export default function HomePage() {
           {heroSlides.map((_, index) => (
             <button
               key={index}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentSlide ? "bg-white" : "bg-white/50"
-                }`}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                index === currentSlide ? "bg-white" : "bg-white/50"
+              }`}
               onClick={() => setCurrentSlide(index)}
             />
           ))}

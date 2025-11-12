@@ -2,15 +2,13 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Search, ShoppingBag, Menu, X } from "lucide-react"
-import { useCart } from "@/components/cart/cart-context"
-import CartModal from "@/components/cart/cart-modal"
+import { Search, Menu, X, Heart } from "lucide-react"
+import { useFavorites } from "@/components/favorites/favorites-context"
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const [isCartModalOpen, setIsCartModalOpen] = useState(false)
-  const { items } = useCart()
+  const { items: favoriteItems } = useFavorites()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,13 +18,14 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0)
+  const favoriteCount = favoriteItems.length
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full ${isScrolled ? "glass-effect shadow-lg" : "bg-white/90"
-          }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full ${
+          isScrolled ? "glass-effect shadow-lg" : "bg-white/90"
+        }`}
       >
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20 w-full">
@@ -62,17 +61,14 @@ export default function Header() {
               >
                 ACCOUNT
               </Link>
-              <button
-                onClick={() => setIsCartModalOpen(true)}
-                className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
-              >
-                <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
-                {itemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center">
-                    {itemCount}
+              <Link href="/favorites" className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
+                <Heart className="w-4 h-4 sm:w-5 sm:h-5" />
+                {favoriteCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center">
+                    {favoriteCount}
                   </span>
                 )}
-              </button>
+              </Link>
 
               {/* Mobile Menu Button */}
               <button className="lg:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -121,22 +117,18 @@ export default function Header() {
               >
                 ACCOUNT
               </Link>
-              <button
-                onClick={() => {
-                  setIsCartModalOpen(true)
-                  setIsMenuOpen(false)
-                }}
-                className="flex items-center space-x-2 text-base font-medium tracking-wide py-2 w-full text-left"
+              <Link
+                href="/favorites"
+                className="flex items-center space-x-2 text-base font-medium tracking-wide py-2"
+                onClick={() => setIsMenuOpen(false)}
               >
-                <ShoppingBag className="w-4 h-4" />
-                <span>CART ({itemCount})</span>
-              </button>
+                <Heart className="w-4 h-4" />
+                <span>FAVORITES ({favoriteCount})</span>
+              </Link>
             </div>
           </div>
         )}
       </header>
-
-      <CartModal isOpen={isCartModalOpen} onClose={() => setIsCartModalOpen(false)} />
     </>
   )
 }

@@ -14,7 +14,7 @@ const faqData: FAQItem[] = [
     category: "Shipping",
     question: "How long does shipping take?",
     answer:
-      "We offer free standard shipping on all orders over PKR. 2500. Standard shipping typically takes 3-5 business days within the US. Express shipping (1-2 business days) is available for an additional fee.",
+      "We offer free standard shipping on all orders over $100. Standard shipping typically takes 3-5 business days within the US. Express shipping (1-2 business days) is available for an additional fee.",
   },
   {
     category: "Shipping",

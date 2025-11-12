@@ -3,29 +3,25 @@
 import { useEffect, useState } from "react"
 import { use } from "react"
 import Image from "next/image"
-import { Minus, Plus, Heart, Share2 } from "lucide-react"
-import { useCart } from "@/components/cart/cart-context"
+import { Heart, Share2 } from "lucide-react"
 import Product3DViewer from "@/components/product/product-3d-viewer"
 
 interface Product {
   id: string
   name: string
-  price: number
   category: string
   images: string[]
   description: string
-  sizes: string[]
+  longDescription?: string
+  collection?: string
+  tags?: string[]
 }
 
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
   const [product, setProduct] = useState<Product | null>(null)
-  const [selectedSize, setSelectedSize] = useState("")
-  const [quantity, setQuantity] = useState(1)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const [showToast, setShowToast] = useState(false)
   const [loading, setLoading] = useState(true)
-  const { addItem } = useCart()
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -35,9 +31,6 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
           const data: Product[] = await response.json()
           const foundProduct = data.find((p) => p.id === id)
           setProduct(foundProduct || null)
-          if (foundProduct && foundProduct.sizes.length > 0) {
-            setSelectedSize(foundProduct.sizes[0])
-          }
         }
       } catch (error) {
         console.error("Error loading product:", error)
@@ -48,21 +41,6 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
 
     loadProduct()
   }, [id])
-
-  const handleAddToCart = () => {
-    if (!product || !selectedSize) return
-
-    addItem({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.images[0],
-      size: selectedSize,
-    })
-
-    setShowToast(true)
-    setTimeout(() => setShowToast(false), 3000)
-  }
 
   if (loading) {
     return (
@@ -101,7 +79,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
 
             {/* Thumbnail Images */}
             {product.images.length > 1 && (
-              <div className="flex space-x-2 overflow-x-auto">
+              <div className="flex space-x-2 overflow-x-auto pb-2">
                 {product.images.map((image, index) => (
                   <button
                     key={index}
@@ -132,65 +110,37 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
           <div className="space-y-6">
             <div>
               <h1 className="text-3xl md:text-4xl font-light tracking-widest mb-2">{product.name}</h1>
-              <p className="text-2xl font-medium">PKR. {product.price.toLocaleString()}</p>
+              {product.collection && <p className="text-sm tracking-wide text-gray-500 mb-2">{product.collection}</p>}
+              {/* Price display removed */}
             </div>
 
             <p className="text-gray-600 leading-relaxed">{product.description}</p>
 
-            {/* Size Selection */}
-            <div>
-              <h3 className="font-medium mb-3 tracking-wide">SIZE</h3>
-              <div className="flex flex-wrap gap-2">
-                {product.sizes.map((size) => (
-                  <button
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={`px-4 py-2 border text-sm font-medium transition-colors ${
-                      selectedSize === size ? "border-black bg-black text-white" : "border-gray-300 hover:border-black"
-                    }`}
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
+            {product.longDescription && (
+              <p className="text-gray-600 leading-relaxed text-sm">{product.longDescription}</p>
+            )}
+
+            {/* Measurements section replaced with custom made-to-order text */}
+            <div className="border-t border-b py-6">
+              <h3 className="font-medium tracking-wide mb-3">CUSTOM SIZING & DELIVERY</h3>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                Measurements: Please note that all bridal outfits are made as per the custom size of the bride and may
+                take a minimum of 2 to 3 months for delivery. If you have any inquiries regarding your desired ensemble,
+                you are welcome to contact one of our consultants at the number provided below.
+              </p>
             </div>
 
-            {/* Quantity */}
-            <div>
-              <h3 className="font-medium mb-3 tracking-wide">QUANTITY</h3>
-              <div className="flex items-center space-x-4">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="p-2 border border-gray-300 hover:border-black transition-colors"
-                >
-                  <Minus className="w-4 h-4" />
-                </button>
-                <span className="w-12 text-center font-medium">{quantity}</span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="p-2 border border-gray-300 hover:border-black transition-colors"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-
-            {/* Add to Cart */}
             <div className="space-y-4">
-              <button
-                onClick={handleAddToCart}
-                disabled={!selectedSize}
-                className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Add to Cart
+              <button className="w-full bg-black text-white px-6 py-3 font-medium tracking-wide hover:bg-gray-900 transition-colors">
+                SCHEDULE CONSULTATION
               </button>
 
-              <div className="flex space-x-4">
-                <button className="flex-1 btn-secondary flex items-center justify-center space-x-2">
+              <div className="flex gap-4">
+                <button className="flex-1 border border-gray-300 text-gray-700 px-6 py-3 font-medium tracking-wide hover:border-black transition-colors flex items-center justify-center space-x-2">
                   <Heart className="w-4 h-4" />
-                  <span>Add to Wishlist</span>
+                  <span>Add to Favorites</span>
                 </button>
-                <button className="flex-1 btn-secondary flex items-center justify-center space-x-2">
+                <button className="flex-1 border border-gray-300 text-gray-700 px-6 py-3 font-medium tracking-wide hover:border-black transition-colors flex items-center justify-center space-x-2">
                   <Share2 className="w-4 h-4" />
                   <span>Share</span>
                 </button>
@@ -206,10 +156,11 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                 </summary>
                 <div className="mt-4 text-gray-600 text-sm leading-relaxed">
                   <ul className="space-y-1">
-                    <li>• Premium fabric construction</li>
+                    <li>• Premium bridal fabric construction</li>
+                    <li>• Custom made-to-order</li>
+                    <li>• 2-3 months delivery time</li>
                     <li>• Professional dry clean only</li>
-                    <li>• Designed and crafted with care</li>
-                    <li>• Model is 5'9" wearing size S</li>
+                    <li>• Designed and handcrafted with care</li>
                   </ul>
                 </div>
               </details>
@@ -225,6 +176,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                     <li>• Store on padded hangers</li>
                     <li>• Avoid direct sunlight when storing</li>
                     <li>• Handle delicate details with care</li>
+                    <li>• Use a garment bag for long-term storage</li>
                   </ul>
                 </div>
               </details>
@@ -232,13 +184,6 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
           </div>
         </div>
       </div>
-
-      {/* Toast Notification */}
-      {showToast && (
-        <div className="fixed bottom-4 right-4 bg-black text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-slide-up">
-          Added to cart successfully!
-        </div>
-      )}
     </div>
   )
 }

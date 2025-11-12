@@ -96,7 +96,7 @@ export default function CheckoutPage() {
                       Size: {item.size} × {item.quantity}
                     </p>
                   </div>
-                  <p className="font-medium">PKR. {(item.price * item.quantity).toFixed(2)}</p>
+                  <p className="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
                 </div>
               ))}
             </div>
@@ -104,7 +104,7 @@ export default function CheckoutPage() {
             <div className="border-t pt-4 space-y-2">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>PKR. {total.toFixed(2)}</span>
+                <span>${total.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Shipping</span>
@@ -112,7 +112,7 @@ export default function CheckoutPage() {
               </div>
               <div className="flex justify-between font-medium text-lg">
                 <span>Total</span>
-                <span>PKR. {total.toFixed(2)}</span>
+                <span>${total.toFixed(2)}</span>
               </div>
             </div>
           </div>

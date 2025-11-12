@@ -5,16 +5,14 @@ import type React from "react"
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { ShoppingBag, Check } from "lucide-react"
-import { useCart } from "@/components/cart/cart-context"
+import { Heart } from "lucide-react"
+import { useFavorites } from "@/components/favorites/favorites-context"
 
 interface Product {
   id: string
   name: string
-  price: number
   images: string[]
   description: string
-  sizes: string[]
 }
 
 interface ProductCardProps {
@@ -25,64 +23,34 @@ export default function ProductCard({ product }: ProductCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
   const [imageError, setImageError] = useState(false)
-  const [selectedSize, setSelectedSize] = useState(product.sizes[0] || "")
-  const [showSizeSelector, setShowSizeSelector] = useState(false)
-  const [isAdding, setIsAdding] = useState(false)
-  const [justAdded, setJustAdded] = useState(false)
-  const { addItem } = useCart()
+  const { isFavorited, addFavorite, removeFavorite } = useFavorites()
+  const [isFav, setIsFav] = useState(() => isFavorited(product.id))
 
   const handleImageError = () => {
     setImageError(true)
   }
 
-  const handleAddToCart = async (e: React.MouseEvent) => {
+  const handleToggleFavorite = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
 
-    if (!selectedSize) return
-
-    setIsAdding(true)
-
-    // Simulate a brief loading state
-    setTimeout(() => {
-      addItem({
+    if (isFav) {
+      removeFavorite(product.id)
+    } else {
+      addFavorite({
         id: product.id,
         name: product.name,
-        price: product.price,
         image: product.images[0],
-        size: selectedSize,
       })
-
-      setIsAdding(false)
-      setJustAdded(true)
-      setShowSizeSelector(false)
-
-      // Reset the "just added" state after 2 seconds
-      setTimeout(() => {
-        setJustAdded(false)
-      }, 2000)
-    }, 500)
-  }
-
-  const handleQuickAdd = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-
-    if (product.sizes.length > 1) {
-      setShowSizeSelector(true)
-    } else {
-      handleAddToCart(e)
     }
+    setIsFav(!isFav)
   }
 
   return (
     <div
       className="product-card group relative"
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => {
-        setIsHovered(false)
-        setShowSizeSelector(false)
-      }}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <Link href={`/product/${product.id}`}>
         <div className="relative overflow-hidden bg-gray-50 aspect-[3/4] mb-4">
@@ -126,68 +94,19 @@ export default function ProductCard({ product }: ProductCardProps) {
             }`}
           />
 
-          {/* Quick Add Button */}
-          <div
-            className={`absolute bottom-4 right-4 transition-all duration-300 ${
-              isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+          <button
+            onClick={handleToggleFavorite}
+            className={`absolute top-4 right-4 p-2 rounded-full transition-all duration-300 ${
+              isFav ? "bg-red-500 text-white" : "bg-white/90 text-gray-800 hover:bg-white"
             }`}
           >
-            {showSizeSelector ? (
-              <div className="bg-white rounded-lg p-3 shadow-lg min-w-[200px]" onClick={(e) => e.preventDefault()}>
-                <p className="text-xs font-medium mb-2 tracking-wide">SELECT SIZE</p>
-                <div className="flex flex-wrap gap-1 mb-3">
-                  {product.sizes.map((size) => (
-                    <button
-                      key={size}
-                      onClick={(e) => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        setSelectedSize(size)
-                      }}
-                      className={`px-2 py-1 text-xs border transition-colors ${
-                        selectedSize === size
-                          ? "border-black bg-black text-white"
-                          : "border-gray-300 hover:border-black"
-                      }`}
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
-                <button
-                  onClick={handleAddToCart}
-                  disabled={!selectedSize || isAdding}
-                  className="w-full bg-black text-white text-xs py-2 px-3 font-medium tracking-wide hover:bg-gray-800 transition-colors disabled:opacity-50 flex items-center justify-center space-x-1"
-                >
-                  {isAdding ? (
-                    <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></div>
-                  ) : justAdded ? (
-                    <>
-                      <Check className="w-3 h-3" />
-                      <span>ADDED</span>
-                    </>
-                  ) : (
-                    <>
-                      <ShoppingBag className="w-3 h-3" />
-                      <span>ADD TO BAG</span>
-                    </>
-                  )}
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={handleQuickAdd}
-                className="bg-white text-black p-3 rounded-full shadow-lg hover:bg-gray-100 transition-colors flex items-center justify-center"
-              >
-                {justAdded ? <Check className="w-5 h-5 text-green-600" /> : <ShoppingBag className="w-5 h-5" />}
-              </button>
-            )}
-          </div>
+            <Heart className={`w-5 h-5 ${isFav ? "fill-current" : ""}`} />
+          </button>
         </div>
 
         <div className="space-y-2">
           <h3 className="font-medium text-sm tracking-wide uppercase">{product.name}</h3>
-          <p className="text-gray-600 text-sm">PKR. {product.price.toLocaleString()}</p>
+          <p className="text-gray-600 text-xs">Made to Order</p>
         </div>
       </Link>
     </div>

@@ -1,14 +1,19 @@
 import type { Config } from "tailwindcss"
+import defaultConfig from "shadcn/ui/tailwind.config"
 
 const config: Config = {
+  ...defaultConfig,
   content: [
-    "./app/**/*.{ts,tsx}",
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
+    ...defaultConfig.content,
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    ...defaultConfig.theme,
     extend: {
+      ...defaultConfig.theme.extend,
       fontFamily: {
         sans: ["Inter", "sans-serif"],
       },
@@ -33,7 +38,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [...defaultConfig.plugins, require("tailwindcss-animate")],
 }
 
 export default config

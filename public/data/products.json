@@ -1,78 +1,123 @@
 [
   {
     "id": "1",
-    "name": "Ruby's Touch",
-    "price": 2899,
+    "name": "Dress 1",
     "category": "bridal",
     "images": [
-      "/images/products/rubys-touch-1.jpg",
-      "/images/products/rubys-touch-2.jpg",
-      "/images/products/rubys-touch-3.jpg",
-      "/images/products/rubys-touch-detail.jpg",
-      "/images/products/rubys-touch-silhouette.jpg"
+      "/docs/dress1/image1.png",
+      "/docs/dress1/image2.png",
+      "/docs/dress1/image3.JPG",
+      "/docs/dress1/image4.png",
+      "/docs/dress1/image5.JPG"
     ],
-    "description": "An epitome of elegance and allure. Ruby's Touch features a sheer neckline and sleeves adorned with floral lace appliqués, along with a beautiful mermaid cut that contours the body gracefully. The hemline is ornamented with delicate ruffles and subtle pink embellishments, lending a feminine charm to the overall design.",
-    "sizes": ["XS", "S", "M", "L", "XL"],
+    "description": "A captivating blend of demureness and radiant charm, this dress features beautiful ruffles, a subtle sparkle within the lace fabric with a beautiful train which adds regal touch to the ensemble, making it a stunning choice for the bride who desires minimal luxury with a hint of sparkle.",
+    "longDescription": "Crafted for the modern bride who celebrates individuality with grace, Dress 1 embodies the Eve Whites philosophy of soulful style and graceful magnificence. This signature bridal piece combines avant-garde silhouettes with enduring elegance, featuring intricate lace work and delicate embellishments that tell a story of refined beauty.",
     "featured": true,
-    "collection": "Signature Bridal"
+    "collection": "Signature Bridal",
+    "tags": ["bridal", "ruffles", "lace", "sparkle", "luxury wedding gown", "Pakistani bridal wear"]
   },
   {
     "id": "2",
-    "name": "Étoile Satinée",
-    "price": 3299,
+    "name": "Aurelia",
     "category": "bridal",
     "images": [
-      "/images/products/etoile-satinee-1.jpg",
-      "/images/products/etoile-satinee-2.jpg",
-      "/images/products/etoile-satinee-detail.jpg"
+      "/docs/dress2/image1.png",
+      "/docs/dress2/image2.JPG",
+      "/docs/dress2/image3.png",
+      "/docs/dress2/image4.JPG",
+      "/docs/dress2/image5.JPG",
+      "/docs/dress2/image6.png"
     ],
-    "description": "Featuring a mesmerizing mermaid silhouette that entrancingly accentuates the figure, flowing into a graceful train. The upper design is adorned with a soft bow shaped draped neckline and the subtle embellishments add a touch of regal sophistication.",
-    "sizes": ["XS", "S", "M", "L", "XL"],
+    "description": "A vision of refined simplicity and celestial glamour, crafted for the modern bride, this minimalistic white silk gown exudes timeless sophistication with a high neckline intricately embellished with pearls and golden accents. The puffed sleeves, adorned with subtle detailing, enhance the romantic aesthetic of the look.",
+    "longDescription": "Aurelia translates celestial elegance into couture bridal wear. This masterpiece epitomizes Eve Whites' vision of unconventional luxury, where futuristic aesthetics meet classic silhouettes. The sophisticated high neckline and puffed sleeves create an unforgettable presence for the bride seeking modernity with dignity and timeless sophistication.",
     "featured": true,
-    "collection": "Couture Evening"
+    "collection": "Couture Bridal",
+    "tags": ["bridal", "pearls", "high neckline", "puffed sleeves", "luxury Pakistani designer"]
   },
   {
     "id": "3",
-    "name": "Classic Elegance",
-    "price": 2599,
-    "category": "evening",
-    "images": ["/images/products/classic-elegance-1.jpg", "/images/products/classic-elegance-2.jpg"],
-    "description": "A timeless white evening gown with clean lines and sophisticated draping. Features a fitted bodice with subtle gathering and a flowing train that creates an effortlessly elegant silhouette.",
-    "sizes": ["XS", "S", "M", "L", "XL"],
+    "name": "Maren",
+    "category": "bridal",
+    "images": [
+      "/docs/dress3/image1.png",
+      "/docs/dress3/image2.png",
+      "/docs/dress3/image3.png",
+      "/docs/dress3/image4.JPG",
+      "/docs/dress3/image5.png"
+    ],
+    "description": "This elegant white bridal dress is a stunning blend of classic modesty and allure. The delicate crystal and pearl embellishments on the bodice add a touch of luxury without overwhelming the minimalist aesthetic. Made of silk fabric, the A-line box pleated skirt flows gracefully, enhancing the wearer's silhouette.",
+    "longDescription": "Maren represents the timeless collection where minimalist design meets maximum impact. This piece celebrates cultural dignity and contemporary elegance through its refined simplicity and exquisite embellishments. Designed for the woman who understands that true sophistication lies in restraint and intentionality, embodying Eve Whites' commitment to both modernity and modesty.",
     "featured": true,
-    "collection": "Timeless Collection"
+    "collection": "Timeless Collection",
+    "tags": ["bridal", "A-line", "crystals", "pearls", "minimalist", "Pakistani fashion"]
   },
   {
     "id": "4",
-    "name": "Pearl Cascade",
-    "price": 3599,
+    "name": "White Rose",
     "category": "bridal",
-    "images": ["/images/products/rubys-touch-1.jpg", "/images/products/rubys-touch-3.jpg"],
-    "description": "Exquisite bridal gown featuring intricate lace appliqués and delicate pearl detailing. The long sleeves and high neckline create a sophisticated look while the fitted silhouette flows into a stunning train.",
-    "sizes": ["XS", "S", "M", "L"],
+    "images": [
+      "/docs/dress4/image1.JPG",
+      "/docs/dress4/image2.JPG",
+      "/docs/dress4/image2.JPG",
+      "/docs/dress4/image4.png",
+      "/docs/dress4/image5.JPG"
+    ],
+    "description": "Crafted from luxurious Chantelle fabric, embodying love and femininity, this beautiful dress exudes sophistication and simplicity. The fitted waist is accentuated with a delicate floral belt, and the flowing A-line box pleated skirt cascades gracefully, providing a classic silhouette.",
+    "longDescription": "White Rose celebrates the essence of femininity and timeless elegance through its luxurious Chantelle fabric and delicate floral details. This bridal masterpiece combines classic sophistication with contemporary design, perfect for the bride who seeks grace and presence. The fitted waist and flowing skirt create an unforgettable silhouette that speaks to Eve Whites' vision of empowered elegance.",
     "featured": false,
-    "collection": "Signature Bridal"
+    "collection": "Signature Bridal",
+    "tags": ["bridal", "Chantelle", "floral belt", "A-line", "Pakistani wedding"]
   },
   {
     "id": "5",
-    "name": "Moonlight Serenade",
-    "price": 2799,
+    "name": "Ruffles Cascade",
     "category": "evening",
-    "images": ["/images/products/classic-elegance-1.jpg"],
-    "description": "A captivating evening gown that embodies modern romance. The sleek silhouette and dramatic train create an unforgettable presence for special occasions.",
-    "sizes": ["XS", "S", "M", "L", "XL"],
+    "images": [
+      "/docs/dress5/image1.png",
+      "/docs/dress5/image2.png",
+      "/docs/dress5/image3.png",
+      "/docs/dress5/image4.png",
+      "/docs/dress5/image5.png"
+    ],
+    "description": "Featuring a sleeveless bodice with clean lines and a square neckline, this whimsical dress embodies modern minimalism. The highlight lies in the cascading ruffles of the skirt, layered delicately to create a sense of movement and drama, giving the ensemble a dreamy, romantic allure.",
+    "longDescription": "Ruffles Cascade captures the essence of modern romance with its striking cascading ruffles and clean silhouette. This evening piece from the Romance collection is designed for the woman who seeks a balance between contemporary sophistication and dreamy elegance, perfect for galas, engagements, and celebrations. The whimsical design speaks to individuality and graceful magnificence.",
     "featured": false,
-    "collection": "Evening Romance"
+    "collection": "Evening Romance",
+    "tags": ["evening gown", "ruffles", "cascading skirt", "modern minimalism", "luxury fashion Pakistan"]
   },
   {
     "id": "6",
-    "name": "Celestial Dreams",
-    "price": 3899,
+    "name": "Étoile Satinée",
     "category": "bridal",
-    "images": ["/images/products/etoile-satinee-detail.jpg", "/images/products/etoile-satinee-1.jpg"],
-    "description": "A breathtaking bridal masterpiece adorned with celestial-inspired beadwork and crystals. The sheer bodice creates an ethereal effect while maintaining elegant sophistication.",
-    "sizes": ["XS", "S", "M", "L"],
+    "images": [
+      "/docs/dress6/image1.png",
+      "/docs/dress6/image2.png",
+      "/docs/dress6/image3.JPG",
+      "/docs/dress6/image4.png",
+      "/docs/dress6/image5.JPG"
+    ],
+    "description": "Featuring a mesmerizing mermaid silhouette that entrancingly accentuates the figure, flowing into a graceful train. The upper design is adorned with a soft bow shaped draped neckline and the subtle embellishments add a touch of regal sophistication.",
+    "longDescription": "Étoile Satinée represents the pinnacle of Eve Whites' couture expertise. This masterpiece features a mesmerizing mermaid silhouette that accentuates the figure gracefully, flowing into an elegant train. The sophisticated draped neckline and regal embellishments create an unforgettable presence for the bride seeking modernity with dignity and timeless sophistication.",
     "featured": true,
-    "collection": "Couture Bridal"
+    "collection": "Couture Evening",
+    "tags": ["couture bridal", "mermaid silhouette", "draped neckline", "train", "luxury wedding gown Pakistan"]
+  },
+  {
+    "id": "7",
+    "name": "Ruby's Touch",
+    "category": "bridal",
+    "images": [
+      "/docs/dress7/image1.png",
+      "/docs/dress7/image2.png",
+      "/docs/dress7/image3.png",
+      "/docs/dress7/image4.png",
+      "/docs/dress7/image5.png",
+      "/docs/dress7/image6.png"
+    ],
+    "description": "An epitome of elegance and allure, made on satin silk fabric Ruby's Touch features a sheer neckline and sleeves adorned with floral lace appliqué, along with a beautiful mermaid cut that contours the body gracefully. The hemline is ornamented with delicate ruffles and subtle pink embellishments, lending a feminine charm to the overall design.",
+    "longDescription": "Ruby's Touch is a testament to the Eve Whites commitment to crafting pieces that express individuality and confidence. With its exquisite floral lace appliqués and flowing mermaid silhouette, this gown speaks to both modernity and modesty. The delicate pink embellishments and ruffled hemline empower every wearer to feel poised, powerful, and beautifully seen on her special day.",
+    "featured": true,
+    "collection": "Couture Bridal",
+    "tags": ["bridal", "mermaid", "lace appliqué", "pink embellishments", "satin silk", "Pakistani couture"]
   }
 ]
