@@ -9,8 +9,8 @@
     "start": "next start"
   },
   "dependencies": {
-    "@react-three/drei": "latest",
-    "@react-three/fiber": "latest",
+    "@react-three/drei": "^9.56.25",
+    "@react-three/fiber": "^8.15.16",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "expo": "latest",
