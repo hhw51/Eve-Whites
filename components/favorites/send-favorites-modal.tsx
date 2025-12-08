@@ -1,10 +1,10 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useRef } from "react"
 import { X } from "lucide-react"
 import { useFavorites } from "@/components/favorites/favorites-context"
+import { useToast } from "@/components/toast-provider"
 
 interface SendFavoritesModalProps {
   isOpen: boolean
@@ -13,6 +13,7 @@ interface SendFavoritesModalProps {
 
 export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesModalProps) {
   const { items } = useFavorites()
+  const { addToast } = useToast()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const [formData, setFormData] = useState({
@@ -20,14 +21,19 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
     email: "",
     phone: "",
     occasion: "",
-    colorPalette: "",
-    fabricPreference: "",
-    customDescription: "",
+    bust: "",
+    waist: "",
+    hips: "",
+    shoulderWidth: "",
+    length: "",
+    sleeveLength: "",
+    neckline: "",
+    backDesign: "",
+    additionalNotes: "",
     referenceImage: null as File | null,
   })
 
   const [submitting, setSubmitting] = useState(false)
-  const [submitMessage, setSubmitMessage] = useState("")
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -37,12 +43,13 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
       setFormData((prev) => ({ ...prev, referenceImage: e.target.files![0] }))
+      addToast("Reference image uploaded", "success")
     }
   }
 
   const handleSendEmail = async () => {
     if (!formData.fullName || !formData.email) {
-      alert("Please fill in all required fields")
+      addToast("Please fill in your name and email", "error")
       return
     }
 
@@ -59,166 +66,196 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
       })
 
       if (response.ok) {
-        setSubmitMessage("Your favorites have been sent successfully!")
+        addToast("Favorites sent successfully!", "success")
         setTimeout(() => {
           onClose()
-          setSubmitMessage("")
           setFormData({
             fullName: "",
             email: "",
             phone: "",
             occasion: "",
-            colorPalette: "",
-            fabricPreference: "",
-            customDescription: "",
+            bust: "",
+            waist: "",
+            hips: "",
+            shoulderWidth: "",
+            length: "",
+            sleeveLength: "",
+            neckline: "",
+            backDesign: "",
+            additionalNotes: "",
             referenceImage: null,
           })
-        }, 2000)
+        }, 1500)
       }
     } catch (error) {
       console.error("Error sending favorites:", error)
-      alert("Failed to send favorites. Please try again.")
+      addToast("Failed to send favorites. Please try again.", "error")
     } finally {
       setSubmitting(false)
     }
   }
 
   const handleSendWhatsApp = () => {
-    if (!formData.fullName || !formData.email) {
-      alert("Please fill in all required fields")
+    if (!formData.fullName) {
+      addToast("Please enter your name", "error")
       return
     }
 
-    const favoritesText = items.map((item) => `${item.name} - $${item.price.toLocaleString()}`).join("\n")
+    const favoritesText = items.map((item) => item.name).join("\n")
+    const measurementsText = `Measurements (cm):\nBust: ${formData.bust || "Not provided"}\nWaist: ${formData.waist || "Not provided"}\nHips: ${formData.hips || "Not provided"}\nShoulder Width: ${formData.shoulderWidth || "Not provided"}\nLength: ${formData.length || "Not provided"}\nSleeve Length: ${formData.sleeveLength || "Not provided"}`
 
-    const message = `Hello! I'm interested in your designs.\n\nName: ${formData.fullName}\nEmail: ${formData.email}\nPhone: ${formData.phone || "Not provided"}\n\nOccasion: ${formData.occasion || "Not specified"}\nColor Preference: ${formData.colorPalette || "Not specified"}\nFabric: ${formData.fabricPreference || "Not specified"}\nCustom Design: ${formData.customDescription || "None"}\n\nMy Favorite Designs:\n${favoritesText}`
+    const message = `Hello! I'm interested in your designs.\n\nName: ${formData.fullName}\nEmail: ${formData.email || "Not provided"}\nPhone: ${formData.phone || "Not provided"}\n\nOccasion: ${formData.occasion || "Not specified"}\nNeckline: ${formData.neckline || "Not specified"}\nBack Design: ${formData.backDesign || "Not specified"}\n\n${measurementsText}\n\nAdditional Notes: ${formData.additionalNotes || "None"}\n\nMy Favorite Designs:\n${favoritesText}`
 
     const encodedMessage = encodeURIComponent(message)
     const whatsappUrl = `https://wa.me/?text=${encodedMessage}`
     window.open(whatsappUrl, "_blank")
+    addToast("Redirecting to WhatsApp", "success")
   }
 
   if (!isOpen) return null
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
-      <div className="flex items-center justify-center min-h-screen px-4">
-        {/* Backdrop */}
+      <div className="flex items-center justify-center min-h-screen px-4 py-8">
         <div className="absolute inset-0 bg-black/50 transition-opacity duration-300" onClick={onClose} />
 
-        {/* Modal */}
         <div className="relative bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-          <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
-            <h2 className="text-2xl font-light tracking-widest">SEND MY FAVORITES</h2>
+          <div className="sticky top-0 bg-white border-b px-4 md:px-6 py-4 flex items-center justify-between">
+            <h2 className="text-xl md:text-2xl font-light tracking-widest">SEND MY FAVORITES</h2>
             <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
               <X className="w-6 h-6" />
             </button>
           </div>
 
-          <div className="p-6 space-y-6">
-            {submitMessage && (
-              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
-                {submitMessage}
-              </div>
-            )}
-
+          <div className="p-4 md:p-6 space-y-6">
             {/* Personal Info Section */}
             <div>
               <h3 className="text-lg font-medium tracking-wide mb-4">PERSONAL INFORMATION</h3>
               <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Full Name *</label>
-                  <input
-                    type="text"
-                    name="fullName"
-                    value={formData.fullName}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-black"
-                    placeholder="Enter your full name"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Email Address *</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-black"
-                    placeholder="your@email.com"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Phone Number (Optional)</label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-black"
-                    placeholder="+1 (555) 123-4567"
-                  />
-                </div>
+                <input
+                  type="text"
+                  name="fullName"
+                  placeholder="Full Name *"
+                  value={formData.fullName}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email Address *"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                />
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Phone Number"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                />
               </div>
             </div>
 
-            {/* Design Preferences Section */}
+            {/* Measurements Section */}
+            <div>
+              <h3 className="text-lg font-medium tracking-wide mb-4">CUSTOM MEASUREMENTS (cm)</h3>
+              <p className="text-xs text-gray-600 mb-4">These measurements help us create your perfect fit</p>
+              <div className="grid grid-cols-2 gap-3">
+                <input
+                  type="number"
+                  name="bust"
+                  placeholder="Bust"
+                  value={formData.bust}
+                  onChange={handleInputChange}
+                  className="px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                />
+                <input
+                  type="number"
+                  name="waist"
+                  placeholder="Waist"
+                  value={formData.waist}
+                  onChange={handleInputChange}
+                  className="px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                />
+                <input
+                  type="number"
+                  name="hips"
+                  placeholder="Hips"
+                  value={formData.hips}
+                  onChange={handleInputChange}
+                  className="px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                />
+                <input
+                  type="number"
+                  name="shoulderWidth"
+                  placeholder="Shoulder Width"
+                  value={formData.shoulderWidth}
+                  onChange={handleInputChange}
+                  className="px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                />
+                <input
+                  type="number"
+                  name="length"
+                  placeholder="Total Length"
+                  value={formData.length}
+                  onChange={handleInputChange}
+                  className="px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                />
+                <input
+                  type="number"
+                  name="sleeveLength"
+                  placeholder="Sleeve Length"
+                  value={formData.sleeveLength}
+                  onChange={handleInputChange}
+                  className="px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                />
+              </div>
+            </div>
+
+            {/* Design Preferences */}
             <div>
               <h3 className="text-lg font-medium tracking-wide mb-4">DESIGN PREFERENCES</h3>
               <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Occasion</label>
-                  <select
-                    name="occasion"
-                    value={formData.occasion}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-black"
-                  >
-                    <option value="">Select an occasion</option>
-                    <option value="wedding">Wedding</option>
-                    <option value="party">Party</option>
-                    <option value="casual">Casual</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Preferred Color Palette</label>
-                  <input
-                    type="text"
-                    name="colorPalette"
-                    value={formData.colorPalette}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-black"
-                    placeholder="e.g., Ivory and blush with gold accents"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Fabric Preference</label>
-                  <select
-                    name="fabricPreference"
-                    value={formData.fabricPreference}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-black"
-                  >
-                    <option value="">Select fabric</option>
-                    <option value="silk">Silk</option>
-                    <option value="satin">Satin</option>
-                    <option value="crepe">Crepe</option>
-                    <option value="lace">Lace</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Custom Design Description</label>
-                  <textarea
-                    name="customDescription"
-                    value={formData.customDescription}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-black resize-none"
-                    rows={4}
-                    placeholder="Describe your ideal design, style, silhouette, etc."
-                  />
-                </div>
+                <select
+                  name="occasion"
+                  value={formData.occasion}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                >
+                  <option value="">Select Occasion</option>
+                  <option value="wedding">Wedding</option>
+                  <option value="engagement">Engagement</option>
+                  <option value="mehndi">Mehndi</option>
+                  <option value="event">Special Event</option>
+                  <option value="other">Other</option>
+                </select>
+                <input
+                  type="text"
+                  name="neckline"
+                  placeholder="Preferred Neckline"
+                  value={formData.neckline}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                />
+                <input
+                  type="text"
+                  name="backDesign"
+                  placeholder="Back Design Preference"
+                  value={formData.backDesign}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                />
+                <textarea
+                  name="additionalNotes"
+                  placeholder="Additional Notes & Design Ideas"
+                  value={formData.additionalNotes}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black resize-none"
+                  rows={3}
+                />
                 <div>
                   <label className="block text-sm font-medium mb-2">Reference Image (Optional)</label>
                   <input
@@ -226,10 +263,10 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
                     ref={fileInputRef}
                     onChange={handleFileChange}
                     accept="image/*"
-                    className="w-full"
+                    className="w-full text-sm"
                   />
                   {formData.referenceImage && (
-                    <p className="text-sm text-gray-600 mt-2">{formData.referenceImage.name}</p>
+                    <p className="text-xs text-gray-600 mt-2">{formData.referenceImage.name}</p>
                   )}
                 </div>
               </div>
@@ -238,38 +275,37 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
             {/* Favorites Summary */}
             <div>
               <h3 className="text-lg font-medium tracking-wide mb-4">YOUR FAVORITE DESIGNS</h3>
-              <div className="bg-gray-50 rounded p-4 space-y-3 max-h-48 overflow-y-auto">
-                {items.map((item) => (
-                  <div key={item.id} className="flex items-center space-x-4 pb-3 border-b last:border-b-0">
-                    <div className="relative w-12 h-16 bg-gray-200 rounded overflow-hidden flex-shrink-0">
+              <div className="bg-gray-50 rounded p-4 space-y-2 max-h-40 overflow-y-auto">
+                {items.length === 0 ? (
+                  <p className="text-gray-600 text-sm">No favorites selected</p>
+                ) : (
+                  items.map((item) => (
+                    <div key={item.id} className="flex items-center gap-3 pb-2 border-b last:border-b-0">
                       <img
                         src={item.image || "/placeholder.svg"}
                         alt={item.name}
-                        className="w-full h-full object-cover"
+                        className="w-8 h-10 object-cover rounded"
                       />
+                      <p className="text-sm font-medium truncate">{item.name}</p>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-sm truncate">{item.name}</p>
-                      <p className="text-gray-600 text-sm">${item.price.toLocaleString()}</p>
-                    </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </div>
 
             {/* Submit Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={handleSendEmail}
                 disabled={submitting}
-                className="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm"
               >
                 {submitting ? "Sending..." : "Send via Email"}
               </button>
               <button
                 onClick={handleSendWhatsApp}
                 disabled={submitting}
-                className="flex-1 bg-green-600 text-white px-6 py-3 font-medium tracking-wide uppercase text-sm hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 bg-green-600 text-white px-4 py-2 sm:py-3 font-medium tracking-wide uppercase text-xs sm:text-sm hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Send via WhatsApp
               </button>

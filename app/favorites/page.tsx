@@ -69,7 +69,7 @@ export default function FavoritesPage() {
                       {product.name}
                     </h3>
                   </Link>
-                  <p className="text-gray-600 text-sm mt-2">${product.price.toLocaleString()}</p>
+                  <p className="text-gray-600 text-sm mt-2">Made to Order</p>
                 </div>
               ))}
             </div>

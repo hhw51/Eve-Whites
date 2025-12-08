@@ -1,12 +1,13 @@
 "use client"
 
-import type React from "react"
-
 import { useState } from "react"
+
+import type React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Heart } from "lucide-react"
 import { useFavorites } from "@/components/favorites/favorites-context"
+import { useToast } from "@/components/toast-provider"
 
 interface Product {
   id: string
@@ -24,6 +25,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [imageError, setImageError] = useState(false)
   const { isFavorited, addFavorite, removeFavorite } = useFavorites()
+  const { addToast } = useToast()
   const [isFav, setIsFav] = useState(() => isFavorited(product.id))
 
   const handleImageError = () => {
@@ -36,12 +38,14 @@ export default function ProductCard({ product }: ProductCardProps) {
 
     if (isFav) {
       removeFavorite(product.id)
+      addToast("Removed from favorites", "info")
     } else {
       addFavorite({
         id: product.id,
         name: product.name,
         image: product.images[0],
       })
+      addToast(`${product.name} added to favorites!`, "success")
     }
     setIsFav(!isFav)
   }

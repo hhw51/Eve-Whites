@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState } from "react"
-import { MapPin, Phone, Mail, MessageCircle } from "lucide-react"
+import { Phone, Mail, MessageCircle, Facebook, Instagram } from "lucide-react"
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -18,7 +18,6 @@ export default function ContactPage() {
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Simulate form submission
     setTimeout(() => {
       setIsSubmitting(false)
       setSubmitted(true)
@@ -121,22 +120,12 @@ export default function ContactPage() {
 
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
-                  <MapPin className="w-5 h-5 mt-1 text-gray-600" />
-                  <div>
-                    <h3 className="font-medium mb-1">Visit Our Studio</h3>
-                    <p className="text-gray-600 text-sm">
-                      123 Fashion Avenue
-                      <br />
-                      New York, NY 10001
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
                   <Phone className="w-5 h-5 mt-1 text-gray-600" />
                   <div>
                     <h3 className="font-medium mb-1">Call Us</h3>
-                    <p className="text-gray-600 text-sm">+1 (555) 123-4567</p>
+                    <a href="tel:+923250948136" className="text-gray-600 text-sm hover:text-black transition-colors">
+                      +92 325 0948136
+                    </a>
                   </div>
                 </div>
 
@@ -144,7 +133,12 @@ export default function ContactPage() {
                   <Mail className="w-5 h-5 mt-1 text-gray-600" />
                   <div>
                     <h3 className="font-medium mb-1">Email Us</h3>
-                    <p className="text-gray-600 text-sm">hello@evewhites.com</p>
+                    <a
+                      href="mailto:info@evewhites.com"
+                      className="text-gray-600 text-sm hover:text-black transition-colors"
+                    >
+                      info@evewhites.com
+                    </a>
                   </div>
                 </div>
 
@@ -153,10 +147,42 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-medium mb-1">WhatsApp</h3>
                     <a
-                      href="https://wa.me/15551234567"
+                      href="https://wa.me/923250948136"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="text-gray-600 text-sm hover:text-black transition-colors"
                     >
-                      +1 (555) 123-4567
+                      +92 325 0948136
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4">
+                  <Facebook className="w-5 h-5 mt-1 text-gray-600" />
+                  <div>
+                    <h3 className="font-medium mb-1">Facebook</h3>
+                    <a
+                      href="https://www.facebook.com/evewhites.offical"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 text-sm hover:text-black transition-colors"
+                    >
+                      @evewhites.offical
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4">
+                  <Instagram className="w-5 h-5 mt-1 text-gray-600" />
+                  <div>
+                    <h3 className="font-medium mb-1">Instagram</h3>
+                    <a
+                      href="https://www.instagram.com/evewhites.offical"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 text-sm hover:text-black transition-colors"
+                    >
+                      @evewhites.offical
                     </a>
                   </div>
                 </div>
@@ -169,30 +195,17 @@ export default function ContactPage() {
               <div className="space-y-2 text-sm text-gray-600">
                 <div className="flex justify-between">
                   <span>Monday - Friday</span>
-                  <span>10:00 AM - 8:00 PM</span>
+                  <span>11:00 AM - 8:00 PM</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Saturday</span>
-                  <span>10:00 AM - 6:00 PM</span>
+                  <span>11:00 AM - 6:00 PM</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Sunday</span>
-                  <span>12:00 PM - 5:00 PM</span>
+                  <span>Closed</span>
                 </div>
               </div>
-            </div>
-
-            {/* Map */}
-            <div className="h-64 bg-gray-200 rounded-lg overflow-hidden">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.9663095343008!2d-74.00425878459418!3d40.74844097932681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259bf5c1654f3%3A0xc80f9cfce5383d5d!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sus!4v1635959542207!5m2!1sen!2sus"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
             </div>
           </div>
         </div>

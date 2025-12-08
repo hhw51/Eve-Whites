@@ -42,22 +42,28 @@ export default function HomePage() {
 
   const heroSlides = [
     {
-      image: "/images/products/rubys-touch-1.jpg",
-      title: "RUBY'S TOUCH",
-      subtitle: "An epitome of elegance and allure",
+      image: "/images/web-20banner-201.png",
+      title: "CHANTS DES ANGES",
+      subtitle: "Songs of the Angels",
       cta: "Discover Collection",
     },
     {
-      image: "/images/products/etoile-satinee-1.jpg",
-      title: "ÉTOILE SATINÉE",
-      subtitle: "Mesmerizing mermaid silhouette",
+      image: "/images/web-20banner-209.jpeg",
+      title: "ETHEREAL ELEGANCE",
+      subtitle: "Modern sophistication meets timeless grace",
       cta: "Shop Now",
     },
     {
-      image: "/images/products/classic-elegance-1.jpg",
-      title: "TIMELESS ELEGANCE",
-      subtitle: "Sophisticated luxury for every occasion",
+      image: "/images/wen-20banner-205.jpeg",
+      title: "EVE WHITES",
+      subtitle: "Luxury Bridal Couture",
       cta: "Explore",
+    },
+    {
+      image: "/images/web-20banner-204.png",
+      title: "TIMELESS BEAUTY",
+      subtitle: "Where light meets elegance",
+      cta: "View Collections",
     },
   ]
 
@@ -96,11 +102,18 @@ export default function HomePage() {
       )}
 
       {/* Hero Carousel */}
-      <section className={`relative h-screen overflow-hidden w-full ${!notificationDismissed ? "mt-16" : ""}`}>
+      <section
+        className={`relative w-full overflow-hidden ${!notificationDismissed ? "mt-16" : ""}`}
+        style={{
+          aspectRatio: "16 / 9",
+          minHeight: "50vh",
+          maxHeight: window.innerWidth >= 1024 ? "600px" : "100vh",
+        }}
+      >
         {heroSlides.map((slide, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 w-full ${
+            className={`absolute inset-0 transition-opacity duration-1000 w-full h-full ${
               index === currentSlide ? "opacity-100" : "opacity-0"
             }`}
           >
@@ -114,13 +127,13 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-black/30" />
             <div className="absolute inset-0 flex items-center justify-center text-center text-white px-4">
               <div className="max-w-4xl w-full">
-                <h1 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-light tracking-widest mb-4 fade-in">
+                <h1 className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-light tracking-widest mb-2 sm:mb-4 fade-in">
                   {slide.title}
                 </h1>
-                <p className="text-sm sm:text-lg md:text-xl mb-8 fade-in" style={{ animationDelay: "0.2s" }}>
+                <p className="text-xs sm:text-sm md:text-lg mb-4 sm:mb-8 fade-in" style={{ animationDelay: "0.2s" }}>
                   {slide.subtitle}
                 </p>
-                <Link href="/shop" className="btn-primary fade-in" style={{ animationDelay: "0.4s" }}>
+                <Link href="/shop" className="btn-primary fade-in inline-block" style={{ animationDelay: "0.4s" }}>
                   {slide.cta}
                 </Link>
               </div>
@@ -129,11 +142,11 @@ export default function HomePage() {
         ))}
 
         {/* Slide indicators */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3">
+        <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 sm:space-x-3">
           {heroSlides.map((_, index) => (
             <button
               key={index}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
                 index === currentSlide ? "bg-white" : "bg-white/50"
               }`}
               onClick={() => setCurrentSlide(index)}
@@ -175,7 +188,7 @@ export default function HomePage() {
             <div className="text-center">
               <div className="relative h-96 mb-8 overflow-hidden rounded-lg">
                 <Image
-                  src="/images/products/rubys-touch-2.jpg"
+                  src="/luxury-bridal-gown.jpg"
                   alt="Bridal Collection"
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-700"
@@ -195,7 +208,7 @@ export default function HomePage() {
             <div className="text-center">
               <div className="relative h-96 mb-8 overflow-hidden rounded-lg">
                 <Image
-                  src="/images/products/etoile-satinee-2.jpg"
+                  src="/luxury-evening-wear.jpg"
                   alt="Evening Collection"
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-700"
@@ -233,12 +246,7 @@ export default function HomePage() {
               </Link>
             </div>
             <div className="relative h-96 lg:h-[500px]">
-              <Image
-                src="/images/products/rubys-touch-silhouette.jpg"
-                alt="Brand Philosophy"
-                fill
-                className="object-cover rounded-lg"
-              />
+              <Image src="/bride-in-luxury-gown.jpg" alt="Brand Philosophy" fill className="object-cover rounded-lg" />
             </div>
           </div>
         </div>

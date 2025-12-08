@@ -2,8 +2,10 @@ import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
 import { FavoritesProvider } from "@/components/favorites/favorites-context"
+import { ToastProvider } from "@/components/toast-provider"
 import Header from "@/components/layout/header"
 import Footer from "@/components/layout/footer"
+import OrderBotWidget from "@/components/order-bot-widget"
 
 export const metadata: Metadata = {
   title: "Eve Whites - Luxury Bridal & Evening Wear | Pakistani Designer",
@@ -66,10 +68,12 @@ export default function RootLayout({
                 "Luxury bridal and evening wear designer based in Pakistan, specializing in avant-garde couture with classical elegance",
               url: "https://evewhites.com",
               logo: "https://evewhites.com/logo.png",
-              sameAs: ["https://www.instagram.com/evewhites", "https://www.facebook.com/evewhites"],
+              sameAs: ["https://www.instagram.com/evewhites.offical", "https://www.facebook.com/evewhites.offical"],
               contactPoint: {
                 "@type": "ContactPoint",
+                telephone: "+92-325-0948136",
                 contactType: "Customer Service",
+                email: "info@evewhites.com",
                 availableLanguage: "English",
               },
             }),
@@ -77,13 +81,16 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased overflow-x-hidden">
-        <FavoritesProvider>
-          <div className="min-h-screen flex flex-col w-full max-w-full">
-            <Header />
-            <main className="flex-1 w-full max-w-full overflow-x-hidden">{children}</main>
-            <Footer />
-          </div>
-        </FavoritesProvider>
+        <ToastProvider>
+          <FavoritesProvider>
+            <div className="min-h-screen flex flex-col w-full max-w-full">
+              <Header />
+              <main className="flex-1 w-full max-w-full overflow-x-hidden">{children}</main>
+              <Footer />
+              <OrderBotWidget />
+            </div>
+          </FavoritesProvider>
+        </ToastProvider>
       </body>
     </html>
   )

@@ -6,7 +6,6 @@ import { createContext, useContext, useReducer, useEffect, type ReactNode } from
 interface FavoritedProduct {
   id: string
   name: string
-  price: number
   image: string
 }
 

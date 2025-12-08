@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { use } from "react"
 import Image from "next/image"
 import { Heart, Share2 } from "lucide-react"
-import Product3DViewer from "@/components/product/product-3d-viewer"
+import ConsultationModal from "@/components/consultation-modal"
 
 interface Product {
   id: string
@@ -98,12 +98,6 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                 ))}
               </div>
             )}
-
-            {/* 3D Viewer */}
-            <div className="mt-8">
-              <h3 className="font-medium mb-4 tracking-wide">3D PREVIEW</h3>
-              <Product3DViewer />
-            </div>
           </div>
 
           {/* Product Details */}
@@ -130,21 +124,17 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
               </p>
             </div>
 
-            <div className="space-y-4">
-              <button className="w-full bg-black text-white px-6 py-3 font-medium tracking-wide hover:bg-gray-900 transition-colors">
-                SCHEDULE CONSULTATION
-              </button>
+            <ConsultationModal />
 
-              <div className="flex gap-4">
-                <button className="flex-1 border border-gray-300 text-gray-700 px-6 py-3 font-medium tracking-wide hover:border-black transition-colors flex items-center justify-center space-x-2">
-                  <Heart className="w-4 h-4" />
-                  <span>Add to Favorites</span>
-                </button>
-                <button className="flex-1 border border-gray-300 text-gray-700 px-6 py-3 font-medium tracking-wide hover:border-black transition-colors flex items-center justify-center space-x-2">
-                  <Share2 className="w-4 h-4" />
-                  <span>Share</span>
-                </button>
-              </div>
+            <div className="flex gap-4">
+              <button className="flex-1 border border-gray-300 text-gray-700 px-6 py-3 font-medium tracking-wide hover:border-black transition-colors flex items-center justify-center space-x-2">
+                <Heart className="w-4 h-4" />
+                <span>Add to Favorites</span>
+              </button>
+              <button className="flex-1 border border-gray-300 text-gray-700 px-6 py-3 font-medium tracking-wide hover:border-black transition-colors flex items-center justify-center space-x-2">
+                <Share2 className="w-4 h-4" />
+                <span>Share</span>
+              </button>
             </div>
 
             {/* Product Details */}
