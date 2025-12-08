@@ -180,15 +180,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Collections Showcase */}
-      <section className="py-20 bg-gray-50 w-full">
+  {/* Collections Showcase */}
+  <section className="py-20 bg-gray-50 w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             {/* Bridal Collection */}
             <div className="text-center">
               <div className="relative h-96 mb-8 overflow-hidden rounded-lg">
                 <Image
-                  src="/luxury-bridal-gown.jpg"
+                  src="/images/products/rubys-touch-2.jpg"
                   alt="Bridal Collection"
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-700"
@@ -208,7 +208,7 @@ export default function HomePage() {
             <div className="text-center">
               <div className="relative h-96 mb-8 overflow-hidden rounded-lg">
                 <Image
-                  src="/luxury-evening-wear.jpg"
+                  src="/images/products/etoile-satinee-2.jpg"
                   alt="Evening Collection"
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-700"
@@ -227,8 +227,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Brand Story */}
-      <section className="py-20 w-full">
+     {/* Brand Story */}
+     <section className="py-20 w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="px-4">
@@ -246,7 +246,12 @@ export default function HomePage() {
               </Link>
             </div>
             <div className="relative h-96 lg:h-[500px]">
-              <Image src="/bride-in-luxury-gown.jpg" alt="Brand Philosophy" fill className="object-cover rounded-lg" />
+              <Image
+                src="/images/products/rubys-touch-silhouette.jpg"
+                alt="Brand Philosophy"
+                fill
+                className="object-cover rounded-lg"
+              />
             </div>
           </div>
         </div>
