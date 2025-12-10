@@ -35,7 +35,9 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
 
   const [submitting, setSubmitting] = useState(false)
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
@@ -54,39 +56,50 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
     }
 
     setSubmitting(true)
+
     try {
+      // Remove file before sending JSON request
+      const { referenceImage, ...safeData } = formData
+
       const response = await fetch("/api/send-favorites", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...formData,
+          ...safeData,
+          referenceImage: null, // backend does not yet handle files
           favorites: items,
           method: "email",
         }),
       })
 
-      if (response.ok) {
-        addToast("Favorites sent successfully!", "success")
-        setTimeout(() => {
-          onClose()
-          setFormData({
-            fullName: "",
-            email: "",
-            phone: "",
-            occasion: "",
-            bust: "",
-            waist: "",
-            hips: "",
-            shoulderWidth: "",
-            length: "",
-            sleeveLength: "",
-            neckline: "",
-            backDesign: "",
-            additionalNotes: "",
-            referenceImage: null,
-          })
-        }, 1500)
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error("Server Error:", errorText)
+        addToast("Server failed to send email.", "error")
+        return
       }
+
+      addToast("Favorites sent successfully!", "success")
+
+      setTimeout(() => {
+        onClose()
+        setFormData({
+          fullName: "",
+          email: "",
+          phone: "",
+          occasion: "",
+          bust: "",
+          waist: "",
+          hips: "",
+          shoulderWidth: "",
+          length: "",
+          sleeveLength: "",
+          neckline: "",
+          backDesign: "",
+          additionalNotes: "",
+          referenceImage: null,
+        })
+      }, 1500)
     } catch (error) {
       console.error("Error sending favorites:", error)
       addToast("Failed to send favorites. Please try again.", "error")
@@ -102,9 +115,31 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
     }
 
     const favoritesText = items.map((item) => item.name).join("\n")
-    const measurementsText = `Measurements (cm):\nBust: ${formData.bust || "Not provided"}\nWaist: ${formData.waist || "Not provided"}\nHips: ${formData.hips || "Not provided"}\nShoulder Width: ${formData.shoulderWidth || "Not provided"}\nLength: ${formData.length || "Not provided"}\nSleeve Length: ${formData.sleeveLength || "Not provided"}`
+    const measurementsText = `Measurements (cm):
+Bust: ${formData.bust || "Not provided"}
+Waist: ${formData.waist || "Not provided"}
+Hips: ${formData.hips || "Not provided"}
+Shoulder Width: ${formData.shoulderWidth || "Not provided"}
+Length: ${formData.length || "Not provided"}
+Sleeve Length: ${formData.sleeveLength || "Not provided"}`
 
-    const message = `Hello! I'm interested in your designs.\n\nName: ${formData.fullName}\nEmail: ${formData.email || "Not provided"}\nPhone: ${formData.phone || "Not provided"}\n\nOccasion: ${formData.occasion || "Not specified"}\nNeckline: ${formData.neckline || "Not specified"}\nBack Design: ${formData.backDesign || "Not specified"}\n\n${measurementsText}\n\nAdditional Notes: ${formData.additionalNotes || "None"}\n\nMy Favorite Designs:\n${favoritesText}`
+    const message = `Hello! I'm interested in your designs.
+
+Name: ${formData.fullName}
+Email: ${formData.email || "Not provided"}
+Phone: ${formData.phone || "Not provided"}
+
+Occasion: ${formData.occasion || "Not specified"}
+Neckline: ${formData.neckline || "Not specified"}
+Back Design: ${formData.backDesign || "Not specified"}
+
+${measurementsText}
+
+Additional Notes: ${formData.additionalNotes || "None"}
+
+My Favorite Designs:
+${favoritesText}
+`
 
     const encodedMessage = encodeURIComponent(message)
     const whatsappUrl = `https://wa.me/?text=${encodedMessage}`
@@ -117,12 +152,18 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="flex items-center justify-center min-h-screen px-4 py-8">
-        <div className="absolute inset-0 bg-black/50 transition-opacity duration-300" onClick={onClose} />
+        <div
+          className="absolute inset-0 bg-black/50 transition-opacity duration-300"
+          onClick={onClose}
+        />
 
         <div className="relative bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
           <div className="sticky top-0 bg-white border-b px-4 md:px-6 py-4 flex items-center justify-between">
             <h2 className="text-xl md:text-2xl font-light tracking-widest">SEND MY FAVORITES</h2>
-            <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
               <X className="w-6 h-6" />
             </button>
           </div>
@@ -162,7 +203,9 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
             {/* Measurements Section */}
             <div>
               <h3 className="text-lg font-medium tracking-wide mb-4">CUSTOM MEASUREMENTS (cm)</h3>
-              <p className="text-xs text-gray-600 mb-4">These measurements help us create your perfect fit</p>
+              <p className="text-xs text-gray-600 mb-4">
+                These measurements help us create your perfect fit
+              </p>
               <div className="grid grid-cols-2 gap-3">
                 <input
                   type="number"
@@ -170,7 +213,7 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
                   placeholder="Bust"
                   value={formData.bust}
                   onChange={handleInputChange}
-                  className="px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                  className="px-4 py-2 border border-gray-300 rounded text-sm"
                 />
                 <input
                   type="number"
@@ -178,7 +221,7 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
                   placeholder="Waist"
                   value={formData.waist}
                   onChange={handleInputChange}
-                  className="px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                  className="px-4 py-2 border border-gray-300 rounded text-sm"
                 />
                 <input
                   type="number"
@@ -186,7 +229,7 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
                   placeholder="Hips"
                   value={formData.hips}
                   onChange={handleInputChange}
-                  className="px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                  className="px-4 py-2 border border-gray-300 rounded text-sm"
                 />
                 <input
                   type="number"
@@ -194,7 +237,7 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
                   placeholder="Shoulder Width"
                   value={formData.shoulderWidth}
                   onChange={handleInputChange}
-                  className="px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                  className="px-4 py-2 border border-gray-300 rounded text-sm"
                 />
                 <input
                   type="number"
@@ -202,7 +245,7 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
                   placeholder="Total Length"
                   value={formData.length}
                   onChange={handleInputChange}
-                  className="px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                  className="px-4 py-2 border border-gray-300 rounded text-sm"
                 />
                 <input
                   type="number"
@@ -210,7 +253,7 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
                   placeholder="Sleeve Length"
                   value={formData.sleeveLength}
                   onChange={handleInputChange}
-                  className="px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                  className="px-4 py-2 border border-gray-300 rounded text-sm"
                 />
               </div>
             </div>
@@ -223,7 +266,7 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
                   name="occasion"
                   value={formData.occasion}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                  className="w-full px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none"
                 >
                   <option value="">Select Occasion</option>
                   <option value="wedding">Wedding</option>
@@ -232,32 +275,38 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
                   <option value="event">Special Event</option>
                   <option value="other">Other</option>
                 </select>
+
                 <input
                   type="text"
                   name="neckline"
                   placeholder="Preferred Neckline"
                   value={formData.neckline}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                  className="w-full px-4 py-2 border border-gray-300 rounded text-sm"
                 />
+
                 <input
                   type="text"
                   name="backDesign"
                   placeholder="Back Design Preference"
                   value={formData.backDesign}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black"
+                  className="w-full px-4 py-2 border border-gray-300 rounded text-sm"
                 />
+
                 <textarea
                   name="additionalNotes"
                   placeholder="Additional Notes & Design Ideas"
                   value={formData.additionalNotes}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-black resize-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded text-sm resize-none"
                   rows={3}
                 />
+
                 <div>
-                  <label className="block text-sm font-medium mb-2">Reference Image (Optional)</label>
+                  <label className="block text-sm font-medium mb-2">
+                    Reference Image (Optional)
+                  </label>
                   <input
                     type="file"
                     ref={fileInputRef}
@@ -266,13 +315,15 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
                     className="w-full text-sm"
                   />
                   {formData.referenceImage && (
-                    <p className="text-xs text-gray-600 mt-2">{formData.referenceImage.name}</p>
+                    <p className="text-xs text-gray-600 mt-2">
+                      {formData.referenceImage.name}
+                    </p>
                   )}
                 </div>
               </div>
             </div>
 
-            {/* Favorites Summary */}
+            {/* Favorites */}
             <div>
               <h3 className="text-lg font-medium tracking-wide mb-4">YOUR FAVORITE DESIGNS</h3>
               <div className="bg-gray-50 rounded p-4 space-y-2 max-h-40 overflow-y-auto">
@@ -280,7 +331,10 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
                   <p className="text-gray-600 text-sm">No favorites selected</p>
                 ) : (
                   items.map((item) => (
-                    <div key={item.id} className="flex items-center gap-3 pb-2 border-b last:border-b-0">
+                    <div
+                      key={item.id}
+                      className="flex items-center gap-3 pb-2 border-b last:border-b-0"
+                    >
                       <img
                         src={item.image || "/placeholder.svg"}
                         alt={item.name}
@@ -293,15 +347,18 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
               </div>
             </div>
 
-            {/* Submit Buttons */}
+            {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={handleSendEmail}
                 disabled={submitting}
-                className="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm"
+                className={`flex-1 btn-primary text-xs sm:text-sm ${
+                  submitting ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               >
                 {submitting ? "Sending..." : "Send via Email"}
               </button>
+
               <button
                 onClick={handleSendWhatsApp}
                 disabled={submitting}

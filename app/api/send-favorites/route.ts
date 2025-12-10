@@ -1,174 +1,223 @@
-import { type NextRequest, NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import nodemailer from "nodemailer"
+
+export const config = {
+  api: { bodyParser: false },
+}
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
-  port: Number.parseInt(process.env.SMTP_PORT || "587"),
-  secure: process.env.SMTP_SECURE === "true", // true for 465, false for other ports
+  port: Number(process.env.SMTP_PORT || 587),
+  secure: process.env.SMTP_SECURE === "true",
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASSWORD,
   },
 })
 
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    const data = await request.json()
-    const { fullName, email, phone, occasion, colorPalette, fabricType, customDescription, referenceImage, favorites } =
-      data
+    const formData = await req.formData()
 
-    if (!fullName || !email || !favorites || favorites.length === 0) {
+    // Required fields
+    const fullName = formData.get("fullName")?.toString()
+    const email = formData.get("email")?.toString()
+
+    if (!fullName || !email) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
     }
 
+    // Optional fields
+    const phone = formData.get("phone")?.toString()
+    const occasion = formData.get("occasion")?.toString()
+
+    const bust = formData.get("bust")?.toString()
+    const waist = formData.get("waist")?.toString()
+    const hips = formData.get("hips")?.toString()
+    const shoulderWidth = formData.get("shoulderWidth")?.toString()
+    const length = formData.get("length")?.toString()
+    const sleeveLength = formData.get("sleeveLength")?.toString()
+
+    const neckline = formData.get("neckline")?.toString()
+    const backDesign = formData.get("backDesign")?.toString()
+    const additionalNotes = formData.get("additionalNotes")?.toString()
+
+    // Favorites from context (id, name, image)
+    const favoritesRaw = formData.get("favorites")?.toString()
+    const favorites = favoritesRaw ? JSON.parse(favoritesRaw) : []
+
+    if (!Array.isArray(favorites) || favorites.length === 0) {
+      return NextResponse.json({ error: "No favorites provided" }, { status: 400 })
+    }
+
+    // File upload
+    const referenceImage = formData.get("referenceImage") as File | null
+    let attachment = null
+
+    if (referenceImage) {
+      const buffer = Buffer.from(await referenceImage.arrayBuffer())
+      attachment = {
+        filename: referenceImage.name,
+        content: buffer,
+        contentType: referenceImage.type,
+      }
+    }
+
+    // Build favorites HTML strictly based on your context structure
     const favoritesHtml = favorites
-      .map(
-        (product: any) => `
-      <div style="margin: 15px 0; padding: 15px; border: 1px solid #e0e0e0; border-radius: 8px;">
-        <h4 style="margin: 0 0 10px 0; color: #1a1a1a;">${product.name}</h4>
-        <p style="margin: 5px 0; color: #666;">Price: $${product.price}</p>
-        <p style="margin: 5px 0; color: #666;">${product.description}</p>
+    .map(
+      (item: any) => `
+        <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 25px 0;border:1px solid #e8e8e8;border-radius:14px;overflow:hidden;">
+          <tr>
+            <td width="120" style="padding:0;">
+              <img src="${item.image}" width="120" style="display:block;width:120px;height:120px;object-fit:cover;" />
+            </td>
+            <td style="padding:15px 20px;vertical-align:middle;">
+              <div style="font-size:18px;font-weight:600;color:#111;margin-bottom:6px;">
+                ${item.name}
+              </div>
+              <div style="font-size:13px;color:#777;">
+                Product ID: ${item.id}
+              </div>
+            </td>
+          </tr>
+        </table>
+      `
+    )
+    .join("")
+  
+
+    // Admin template
+    const htmlAdmin = `
+    <div style="font-family: 'Helvetica Neue', Arial, sans-serif; padding:40px; background:#fafafa; color:#333;">
+      
+      <div style="text-align:center; margin-bottom:25px;">
+        <img src="https://i.ibb.co/NC0tYLx/eve-whites-logo.png"
+             alt="EVE WHITES"
+             style="width:180px; opacity:0.95;" />
       </div>
-    `,
-      )
-      .join("")
+  
+      <h1 style="
+        text-align:center;
+        font-weight:300;
+        font-size:28px;
+        letter-spacing:1px;
+        color:#000;
+        margin-bottom:40px;
+      ">
+        NEW FAVORITES SUBMISSION
+      </h1>
+  
+      <div style="background:#fff;padding:30px;border-radius:16px;border:1px solid #eee;">
+        
+        <h2 style="font-weight:500;font-size:20px;margin-bottom:10px;color:#000;">Customer Information</h2>
+        <p><b>Name:</b> ${fullName}</p>
+        <p><b>Email:</b> ${email}</p>
+        <p><b>Phone:</b> ${phone || "-"}</p>
+  
+        <hr style="margin:30px 0;border:none;border-top:1px solid #eee;">
+  
+        <h2 style="font-weight:500;font-size:20px;margin-bottom:10px;color:#000;">Design Preferences</h2>
+        <p><b>Occasion:</b> ${occasion || "-"}</p>
+        <p><b>Neckline:</b> ${neckline || "-"}</p>
+        <p><b>Back Design:</b> ${backDesign || "-"}</p>
+        <p><b>Additional Notes:</b> ${additionalNotes || "-"}</p>
+  
+        <hr style="margin:30px 0;border:none;border-top:1px solid #eee;">
+  
+        <h2 style="font-weight:500;font-size:20px;margin-bottom:10px;color:#000;">Measurements</h2>
+        <p><b>Bust:</b> ${bust || "-"}</p>
+        <p><b>Waist:</b> ${waist || "-"}</p>
+        <p><b>Hips:</b> ${hips || "-"}</p>
+        <p><b>Shoulder Width:</b> ${shoulderWidth || "-"}</p>
+        <p><b>Length:</b> ${length || "-"}</p>
+        <p><b>Sleeve Length:</b> ${sleeveLength || "-"}</p>
+  
+        <hr style="margin:30px 0;border:none;border-top:1px solid #eee;">
+  
+        <h2 style="font-weight:500;font-size:20px;margin-bottom:20px;color:#000;">
+          Favorited Items (${favorites.length})
+        </h2>
+  
+        ${favoritesHtml}
+  
+      </div>
+  
+      <p style="text-align:center;margin-top:40px;font-size:12px;color:#999;">
+        Submitted on ${new Date().toLocaleString()}
+      </p>
+  
+    </div>
+  `
+  
 
-    const htmlContent = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta charset="UTF-8">
-          <style>
-            body { font-family: Arial, sans-serif; color: #333; }
-            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { border-bottom: 2px solid #000; padding-bottom: 20px; margin-bottom: 20px; }
-            .header h1 { margin: 0; font-size: 24px; }
-            .section { margin: 20px 0; }
-            .section-title { font-weight: bold; font-size: 16px; margin-bottom: 10px; border-bottom: 1px solid #e0e0e0; padding-bottom: 5px; }
-            .info-item { margin: 10px 0; }
-            .info-label { font-weight: bold; color: #666; }
-            .info-value { color: #333; }
-            .favorites-section { background: #f9f9f9; padding: 15px; border-radius: 8px; }
-            .footer { margin-top: 30px; border-top: 1px solid #e0e0e0; padding-top: 15px; text-align: center; font-size: 12px; color: #999; }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <div class="header">
-              <h1>EVE WHITES - Favorites Submission</h1>
-            </div>
+    // Customer confirmation
+    const htmlCustomer = `
+    <div style="font-family: 'Helvetica Neue', Arial, sans-serif; padding:40px; background:#fafafa; color:#333;">
+      
+      <div style="text-align:center; margin-bottom:25px;">
+        <img src="https://i.ibb.co/NC0tYLx/eve-whites-logo.png"
+             alt="EVE WHITES"
+             style="width:180px; opacity:0.95;" />
+      </div>
+  
+      <h1 style="
+        text-align:center;
+        font-weight:300;
+        font-size:28px;
+        letter-spacing:1px;
+        color:#000;
+        margin-bottom:20px;
+      ">
+        Thank You, ${fullName}! 💗
+      </h1>
+  
+      <p style="text-align:center; font-size:16px; color:#555; line-height:1.6; max-width:600px; margin:0 auto 30px;">
+        We’ve received your selected favorites and custom measurements.  
+        Our design team at <b>EVE WHITES</b> will get in touch with you shortly
+        to guide you through the next steps and finalize your bespoke outfit.
+      </p>
+  
+      <div style="background:#fff;padding:30px;border-radius:16px;border:1px solid #eee;max-width:700px;margin:0 auto;">
+        
+        <h2 style="font-weight:500;font-size:20px;margin-bottom:20px;color:#000;">
+          Your Favorites
+        </h2>
+  
+        ${favoritesHtml}
+  
+      </div>
+  
+      <p style="margin-top:40px;text-align:center;color:#666;font-size:14px;">
+        With love,<br>
+        <b style="font-size:16px;">The EVE WHITES Team</b>
+      </p>
+  
+    </div>
+  `
+  
 
-            <div class="section">
-              <div class="section-title">Customer Information</div>
-              <div class="info-item">
-                <span class="info-label">Name:</span>
-                <span class="info-value">${fullName}</span>
-              </div>
-              <div class="info-item">
-                <span class="info-label">Email:</span>
-                <span class="info-value">${email}</span>
-              </div>
-              <div class="info-item">
-                <span class="info-label">Phone:</span>
-                <span class="info-value">${phone || "Not provided"}</span>
-              </div>
-            </div>
-
-            <div class="section">
-              <div class="section-title">Design Preferences</div>
-              <div class="info-item">
-                <span class="info-label">Occasion:</span>
-                <span class="info-value">${occasion || "Not specified"}</span>
-              </div>
-              <div class="info-item">
-                <span class="info-label">Color Palette:</span>
-                <span class="info-value">${colorPalette || "Not specified"}</span>
-              </div>
-              <div class="info-item">
-                <span class="info-label">Fabric Type:</span>
-                <span class="info-value">${fabricType || "Not specified"}</span>
-              </div>
-              ${
-                customDescription
-                  ? `<div class="info-item">
-                <span class="info-label">Additional Notes:</span>
-                <span class="info-value">${customDescription}</span>
-              </div>`
-                  : ""
-              }
-            </div>
-
-            <div class="section">
-              <div class="section-title">Favorited Items (${favorites.length})</div>
-              <div class="favorites-section">
-                ${favoritesHtml}
-              </div>
-            </div>
-
-            <div class="footer">
-              <p>This email was sent from EVE WHITES website</p>
-              <p>${new Date().toLocaleDateString()}</p>
-            </div>
-          </div>
-        </body>
-      </html>
-    `
-
+    // Send to admin
     await transporter.sendMail({
       from: process.env.SMTP_FROM_EMAIL,
       to: process.env.ADMIN_EMAIL,
-      subject: `New Favorites Submission from ${fullName}`,
-      html: htmlContent,
+      subject: `New Favorites — ${fullName}`,
+      html: htmlAdmin,
+      attachments: attachment ? [attachment] : [],
       replyTo: email,
     })
 
-    const confirmationHtml = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta charset="UTF-8">
-          <style>
-            body { font-family: Arial, sans-serif; color: #333; }
-            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { border-bottom: 2px solid #000; padding-bottom: 20px; margin-bottom: 20px; }
-            .header h1 { margin: 0; font-size: 24px; }
-            .message { margin: 20px 0; line-height: 1.6; }
-            .footer { margin-top: 30px; border-top: 1px solid #e0e0e0; padding-top: 15px; text-align: center; font-size: 12px; color: #999; }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <div class="header">
-              <h1>EVE WHITES</h1>
-            </div>
-            <div class="message">
-              <p>Dear ${fullName},</p>
-              <p>Thank you for submitting your favorites! We've received your selection and preferences.</p>
-              <p>Our team will review your favorites and design preferences shortly. We'll be in touch with you via email or phone to discuss custom options and next steps.</p>
-              <p>We appreciate your interest in EVE WHITES and look forward to creating something beautiful for you.</p>
-              <p>Best regards,<br>The EVE WHITES Team</p>
-            </div>
-            <div class="footer">
-              <p>If you have any questions, please reply to this email.</p>
-            </div>
-          </div>
-        </body>
-      </html>
-    `
-
+    // Customer confirmation
     await transporter.sendMail({
       from: process.env.SMTP_FROM_EMAIL,
       to: email,
-      subject: "Thank You - EVE WHITES Favorites Received",
-      html: confirmationHtml,
+      subject: "We Received Your Favorites — EVE WHITES",
+      html: htmlCustomer,
     })
 
-    return NextResponse.json({
-      success: true,
-      message: "Your favorites have been submitted successfully! You'll receive a confirmation email shortly.",
-    })
+    return NextResponse.json({ success: true })
   } catch (error) {
-    console.error("Error processing favorites:", error)
-    return NextResponse.json({ error: "Failed to send favorites. Please try again later." }, { status: 500 })
+    console.error("API ERROR:", error)
+    return NextResponse.json({ error: "Server Error" }, { status: 500 })
   }
 }
