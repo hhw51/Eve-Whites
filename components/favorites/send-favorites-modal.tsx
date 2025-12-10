@@ -54,59 +54,52 @@ export default function SendFavoritesModal({ isOpen, onClose }: SendFavoritesMod
       addToast("Please fill in your name and email", "error")
       return
     }
-
+  
     setSubmitting(true)
-
+  
     try {
-      // Remove file before sending JSON request
-      const { referenceImage, ...safeData } = formData
-
+      const data = new FormData()
+  
+      // Add all text fields
+      Object.keys(formData).forEach((key) => {
+        if (key !== "referenceImage") {
+          // @ts-ignore
+          data.append(key, formData[key] || "")
+        }
+      })
+  
+      // Add file if exists
+      if (formData.referenceImage) {
+        data.append("referenceImage", formData.referenceImage)
+      }
+  
+      // Favorites array → string
+      data.append("favorites", JSON.stringify(items))
+  
       const response = await fetch("/api/send-favorites", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...safeData,
-          referenceImage: null, // backend does not yet handle files
-          favorites: items,
-          method: "email",
-        }),
+        body: data,
       })
-
+  
       if (!response.ok) {
         const errorText = await response.text()
         console.error("Server Error:", errorText)
         addToast("Server failed to send email.", "error")
         return
       }
-
+  
       addToast("Favorites sent successfully!", "success")
-
       setTimeout(() => {
         onClose()
-        setFormData({
-          fullName: "",
-          email: "",
-          phone: "",
-          occasion: "",
-          bust: "",
-          waist: "",
-          hips: "",
-          shoulderWidth: "",
-          length: "",
-          sleeveLength: "",
-          neckline: "",
-          backDesign: "",
-          additionalNotes: "",
-          referenceImage: null,
-        })
       }, 1500)
-    } catch (error) {
-      console.error("Error sending favorites:", error)
-      addToast("Failed to send favorites. Please try again.", "error")
+    } catch (err) {
+      console.error("Send Error:", err)
+      addToast("Failed to send favorites", "error")
     } finally {
       setSubmitting(false)
     }
   }
+  
 
   const handleSendWhatsApp = () => {
     if (!formData.fullName) {

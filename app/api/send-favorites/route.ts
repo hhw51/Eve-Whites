@@ -51,8 +51,13 @@ export async function POST(req: NextRequest) {
     }
 
     // File upload
-    const referenceImage = formData.get("referenceImage") as File | null
-    let attachment = null
+    let referenceImage = formData.get("referenceImage")
+
+    // Convert "null" → null
+    if (referenceImage === "null" || referenceImage === "" || referenceImage === undefined) {
+      referenceImage = null
+    }
+        let attachment = null
 
     if (referenceImage) {
       const buffer = Buffer.from(await referenceImage.arrayBuffer())
