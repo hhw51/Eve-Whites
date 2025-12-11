@@ -15,6 +15,7 @@ const transporter = nodemailer.createTransport({
   },
 })
 
+
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData()
@@ -169,6 +170,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error("API ERROR:", error)
-    return NextResponse.json({ error: "Server Error" }, { status: 500 })
+    return NextResponse.json({ 
+      error: (error as any)?.message || "Server Error",
+      stack: (error as any)?.stack
+    }, { status: 500 })
   }
+  
 }
