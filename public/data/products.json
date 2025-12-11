@@ -1,7 +1,7 @@
 [
   {
     "id": "1",
-    "name": "Dress 1",
+    "name": "June",
     "category": "bridal",
     "images": [
       "/docs/dress1/image1.jpg",
@@ -11,7 +11,7 @@
       "/docs/dress1/image5.jpg"
     ],
     "description": "A captivating blend of demureness and radiant charm, this dress features beautiful ruffles, a subtle sparkle within the lace fabric with a beautiful train which adds regal touch to the ensemble, making it a stunning choice for the bride who desires minimal luxury with a hint of sparkle.",
-    "longDescription": "Crafted for the modern bride who celebrates individuality with grace, Dress 1 embodies the Eve Whites philosophy of soulful style and graceful magnificence. This signature bridal piece combines avant-garde silhouettes with enduring elegance, featuring intricate lace work and delicate embellishments that tell a story of refined beauty.",
+    "longDescription": "Crafted for the modern bride who celebrates individuality with grace, June embodies the Eve Whites philosophy of soulful style and graceful magnificence. This signature bridal piece combines avant-garde silhouettes with enduring elegance, featuring intricate lace work and delicate embellishments that tell a story of refined beauty.",
     "featured": true,
     "collection": "Signature Bridal",
     "tags": ["bridal", "ruffles", "lace", "sparkle", "luxury wedding gown", "Pakistani bridal wear"]
