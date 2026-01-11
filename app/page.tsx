@@ -63,23 +63,16 @@ export default function HomePage() {
 
   return (
 <div className="pt-16 lg:pt-20 w-full max-w-full overflow-x-hidden bg-white">
-      {/* Notification Bar */}
-      {!notificationDismissed && (
-        <div className="fixed top-16 lg:top-20 left-0 right-0 bg-black text-white z-40 px-4 py-3 border-b border-white/10">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <p className="text-[9px] md:text-xs tracking-[0.2em] uppercase mx-auto">
-              Exclusively <span className="font-bold">made-to-order</span> • 2-3 months delivery
-            </p>
-            <button onClick={() => setNotificationDismissed(true)} className="text-gray-400 hover:text-white transition-colors">✕</button>
-          </div>
-        </div>
-      )}
-
-      {/* Hero Slider - Entire Image is the CTA */}
+      {/* Hero Slider */}
       <section 
-        className={`relative w-full overflow-hidden transition-all duration-500 ${!notificationDismissed ? "mt-10" : "mt-0"}`}
+        className={`relative w-full overflow-hidden transition-all duration-500 ${!notificationDismissed ? "mt-12" : "mt-0"}`}
       >
-        <div className="relative w-full aspect-[4/5] md:aspect-[16/7] lg:aspect-[21/9] max-h-[800px]">
+        {/* ASPECT RATIO LOGIC:
+            - Mobile/Small (sm): 4:5 ratio (Portrait - Best for showing full dresses)
+            - Tablet (md): 4:5 or 3:4 ratio (Prevents excessive horizontal cropping)
+            - Desktop (lg): 21:9 ratio (Cinematic Banner)
+        */}
+        <div className="relative w-full aspect-[4/5] md:aspect-[4/5] lg:aspect-[21/9] max-h-[850px]">
           {heroSlides.map((slide, index) => (
             <Link
               key={index}
@@ -88,36 +81,35 @@ export default function HomePage() {
                 index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
               }`}
             >
-              {/* Image with subtle hover zoom */}
-              <div className="relative w-full h-full overflow-hidden">
+              <div className="relative w-full h-full overflow-hidden bg-gray-100">
                 <Image
                   src={slide.image || "/placeholder.svg"}
-                  alt="Collection Hero"
+                  alt="Collection Look"
                   fill
-                  className="object-cover object-center transition-transform duration-[2000ms] group-hover:scale-105"
+                  className="object-contain md:object-cover object-center transition-transform duration-[3000ms] group-hover:scale-105"
                   priority={index === 0}
                   sizes="100vw"
                 />
               </div>
               
-              {/* Very subtle vignette to show pagination dots better */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-60" />
+              {/* Subtle overlay to ensure navigation visibility */}
+              <div className="absolute inset-0 bg-black/5" />
             </Link>
           ))}
 
-          {/* Minimal Pagination Bars */}
-          <div className="absolute bottom-8 left-0 right-0 z-20 flex justify-center items-center gap-3">
+          {/* Minimalist Indicators */}
+          <div className="absolute bottom-6 left-0 right-0 z-20 flex justify-center items-center gap-3">
             {heroSlides.map((_, index) => (
               <button
                 key={index}
                 onClick={(e) => {
-                  e.preventDefault(); // Prevent link trigger when clicking dots
+                  e.preventDefault();
                   setCurrentSlide(index);
                 }}
-                className={`transition-all duration-500 h-[1.5px] ${
+                className={`transition-all duration-500 h-[1px] ${
                   index === currentSlide 
-                  ? "w-10 bg-white" 
-                  : "w-4 bg-white/30 hover:bg-white/60"
+                  ? "w-12 bg-black md:bg-white" 
+                  : "w-4 bg-black/20 md:bg-white/40"
                 }`}
               />
             ))}
