@@ -40,10 +40,10 @@ export default function HomePage() {
   const featuredProducts = products.filter((product) => product.featured)
 
   const heroSlides = [
-    { image: "/images/web-20banner-201.png", cta: "Discover Chants Des Anges", link: "/shop" },
-    { image: "/images/web-20banner-209.jpeg", cta: "Shop Ethereal Elegance", link: "/shop" },
-    { image: "/images/wen-20banner-205.jpeg", cta: "Explore Eve Whites", link: "/shop" },
-    { image: "/images/web-20banner-204.png", cta: "View Timeless Beauty", link: "/shop" },
+    { image: "/images/web-20banner-201.png", link: "/shop" },
+    { image: "/images/web-20banner-209.jpeg", link: "/shop" },
+    { image: "/images/wen-20banner-205.jpeg", link: "/shop" },
+    { image: "/images/web-20banner-204.png", link: "/shop" },
   ]
 
   useEffect(() => {
@@ -62,71 +62,69 @@ export default function HomePage() {
   }
 
   return (
-    <div className="pt-16 lg:pt-20 w-full max-w-full overflow-x-hidden bg-white">
-    {/* Notification Bar - Slimmer for mobile */}
-    {!notificationDismissed && (
-      <div className="fixed top-16 lg:top-20 left-0 right-0 bg-black text-white z-40 px-4 py-3 border-b border-white/10">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <p className="text-[9px] md:text-xs tracking-[0.2em] uppercase mx-auto">
-            Exclusively <span className="font-bold">made-to-order</span> • 2-3 months delivery
-          </p>
-          <button onClick={() => setNotificationDismissed(true)} className="text-gray-400 hover:text-white transition-colors">✕</button>
-        </div>
-      </div>
-    )}
-
-    {/* Hero Slider - Aspect Ratio Fixed Logic */}
-    <section 
-      className={`relative w-full overflow-hidden transition-all duration-500 ${!notificationDismissed ? "mt-10" : "mt-0"}`}
-    >
-      <div className="relative w-full aspect-[4/5] md:aspect-[16/7] lg:aspect-[21/9] max-h-[750px]">
-        {heroSlides.map((slide, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
-            }`}
-          >
-            <Image
-              src={slide.image || "/placeholder.svg"}
-              alt="Collection Hero"
-              fill
-              className="object-cover object-center"
-              priority={index === 0}
-              sizes="100vw"
-            />
-            
-            {/* Darkening overlay just for the bottom to make CTA pop */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-
-            {/* Minimalist Centered CTA */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Link 
-                href={slide.link}
-                className="bg-white/90 hover:bg-white text-black text-[10px] md:text-xs tracking-[0.3em] uppercase px-8 py-3.5 md:py-4 backdrop-blur-sm transition-all duration-500 hover:scale-105"
-              >
-                {slide.cta}
-              </Link>
-            </div>
+<div className="pt-16 lg:pt-20 w-full max-w-full overflow-x-hidden bg-white">
+      {/* Notification Bar */}
+      {!notificationDismissed && (
+        <div className="fixed top-16 lg:top-20 left-0 right-0 bg-black text-white z-40 px-4 py-3 border-b border-white/10">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <p className="text-[9px] md:text-xs tracking-[0.2em] uppercase mx-auto">
+              Exclusively <span className="font-bold">made-to-order</span> • 2-3 months delivery
+            </p>
+            <button onClick={() => setNotificationDismissed(true)} className="text-gray-400 hover:text-white transition-colors">✕</button>
           </div>
-        ))}
-
-        {/* Minimal Pagination - Dots moved closer to bottom */}
-        <div className="absolute bottom-6 left-0 right-0 z-20 flex justify-center items-center gap-4">
-          {heroSlides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              className={`transition-all duration-300 rounded-full ${
-                index === currentSlide 
-                ? "w-8 h-[2px] bg-white" 
-                : "w-2 h-[2px] bg-white/40 hover:bg-white/60"
-              }`}
-            />
-          ))}
         </div>
-      </div>
-    </section>
+      )}
+
+      {/* Hero Slider - Entire Image is the CTA */}
+      <section 
+        className={`relative w-full overflow-hidden transition-all duration-500 ${!notificationDismissed ? "mt-10" : "mt-0"}`}
+      >
+        <div className="relative w-full aspect-[4/5] md:aspect-[16/7] lg:aspect-[21/9] max-h-[800px]">
+          {heroSlides.map((slide, index) => (
+            <Link
+              key={index}
+              href={slide.link}
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out cursor-pointer group ${
+                index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+              }`}
+            >
+              {/* Image with subtle hover zoom */}
+              <div className="relative w-full h-full overflow-hidden">
+                <Image
+                  src={slide.image || "/placeholder.svg"}
+                  alt="Collection Hero"
+                  fill
+                  className="object-cover object-center transition-transform duration-[2000ms] group-hover:scale-105"
+                  priority={index === 0}
+                  sizes="100vw"
+                />
+              </div>
+              
+              {/* Very subtle vignette to show pagination dots better */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-60" />
+            </Link>
+          ))}
+
+          {/* Minimal Pagination Bars */}
+          <div className="absolute bottom-8 left-0 right-0 z-20 flex justify-center items-center gap-3">
+            {heroSlides.map((_, index) => (
+              <button
+                key={index}
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent link trigger when clicking dots
+                  setCurrentSlide(index);
+                }}
+                className={`transition-all duration-500 h-[1.5px] ${
+                  index === currentSlide 
+                  ? "w-10 bg-white" 
+                  : "w-4 bg-white/30 hover:bg-white/60"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Signature Collections Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
