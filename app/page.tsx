@@ -62,7 +62,7 @@ export default function HomePage() {
   }
 
   return (
-<div className="pt-16 lg:pt-20 w-full max-w-full overflow-x-hidden bg-white">
+<div className="pt-4 lg:pt-20 w-full max-w-full overflow-x-hidden bg-white">
       {/* Hero Slider */}
       <section 
         className={`relative w-full overflow-hidden transition-all duration-500 ${!notificationDismissed ? "mt-12" : "mt-0"}`}
