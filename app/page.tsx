@@ -62,17 +62,27 @@ export default function HomePage() {
   }
 
   return (
-<div className="pt-4 lg:pt-20 w-full max-w-full overflow-x-hidden bg-white">
+<div className="w-full max-w-full overflow-x-hidden bg-white">
+      {/* 1. FIXED NAVBAR SPACING: 
+         Removed large pt-16/pt-20. 
+         Used smaller mt-0 to pull hero closer to the navbar.
+      */}
+      {!notificationDismissed && (
+        <div className="bg-black text-white px-4 py-2 border-b border-white/10 text-center">
+          <p className="text-[9px] md:text-xs tracking-[0.2em] uppercase">
+            Exclusively made-to-order • 2-3 months delivery
+          </p>
+        </div>
+      )}
+
       {/* Hero Slider */}
-      <section 
-        className={`relative w-full overflow-hidden transition-all duration-500 ${!notificationDismissed ? "mt-12" : "mt-0"}`}
-      >
-        {/* ASPECT RATIO LOGIC:
-            - Mobile/Small (sm): 4:5 ratio (Portrait - Best for showing full dresses)
-            - Tablet (md): 4:5 or 3:4 ratio (Prevents excessive horizontal cropping)
-            - Desktop (lg): 21:9 ratio (Cinematic Banner)
+      <section className="relative w-full overflow-hidden">
+        {/* 2. RESPONSIVE HEIGHT & FITTING:
+           - Mobile: aspect-[4/5] ensures full-fit portrait dresses without stretching.
+           - Tablet (md): aspect-[16/9] slims down the section height.
+           - Desktop (lg): max-h-[500px] ensures it doesn't take up the whole screen.
         */}
-        <div className="relative w-full aspect-[4/5] md:aspect-[4/5] lg:aspect-[21/9] max-h-[850px]">
+        <div className="relative w-full aspect-[4/5] md:aspect-[16/8] lg:max-h-[550px] lg:h-[60vh]">
           {heroSlides.map((slide, index) => (
             <Link
               key={index}
@@ -81,35 +91,31 @@ export default function HomePage() {
                 index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
               }`}
             >
-              <div className="relative w-full h-full overflow-hidden bg-gray-100">
+              <div className="relative w-full h-full overflow-hidden bg-[#F2F2F2]">
                 <Image
                   src={slide.image || "/placeholder.svg"}
-                  alt="Collection Look"
+                  alt="Collection Hero"
                   fill
+                  /* 3. "FULL FIT" LOGIC:
+                     - 'object-contain' on mobile ensures the WHOLE image shows (no cropping).
+                     - 'md:object-cover' on larger screens fills the wider banner area.
+                  */
                   className="object-contain md:object-cover object-center transition-transform duration-[3000ms] group-hover:scale-105"
                   priority={index === 0}
                   sizes="100vw"
                 />
               </div>
-              
-              {/* Subtle overlay to ensure navigation visibility */}
-              <div className="absolute inset-0 bg-black/5" />
             </Link>
           ))}
 
-          {/* Minimalist Indicators */}
-          <div className="absolute bottom-6 left-0 right-0 z-20 flex justify-center items-center gap-3">
+          {/* Minimalist Indicators - repositioned for slimmer height */}
+          <div className="absolute bottom-4 left-0 right-0 z-20 flex justify-center items-center gap-2">
             {heroSlides.map((_, index) => (
               <button
                 key={index}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setCurrentSlide(index);
-                }}
-                className={`transition-all duration-500 h-[1px] ${
-                  index === currentSlide 
-                  ? "w-12 bg-black md:bg-white" 
-                  : "w-4 bg-black/20 md:bg-white/40"
+                onClick={(e) => { e.preventDefault(); setCurrentSlide(index); }}
+                className={`transition-all duration-500 h-[1.5px] ${
+                  index === currentSlide ? "w-8 bg-black/60" : "w-3 bg-black/20"
                 }`}
               />
             ))}
