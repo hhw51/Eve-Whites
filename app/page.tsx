@@ -62,46 +62,48 @@ export default function HomePage() {
   }
 
   return (
-    <div className="pt-16 lg:pt-20 w-full max-w-full overflow-x-hidden">
-      {!notificationDismissed && (
-        <div className="fixed top-20 left-0 right-0 bg-black text-white z-40 px-4 py-4 md:py-3 border-b border-white/10">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <p className="text-[10px] md:text-xs tracking-[0.2em] uppercase">
-              Exclusively <span className="font-bold">made-to-order</span> • Delivery: <span className="font-bold">2-3 months</span>
-            </p>
-            <button
-              onClick={() => setNotificationDismissed(true)}
-              className="ml-4 text-gray-400 hover:text-white transition-colors text-xs"
-            >
-              ✕
-            </button>
-          </div>
+    <div className="pt-16 lg:pt-20 w-full max-w-full overflow-x-hidden bg-white">
+    {/* Notification Bar - Slimmer for mobile */}
+    {!notificationDismissed && (
+      <div className="fixed top-16 lg:top-20 left-0 right-0 bg-black text-white z-40 px-4 py-3 border-b border-white/10">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <p className="text-[9px] md:text-xs tracking-[0.2em] uppercase mx-auto">
+            Exclusively <span className="font-bold">made-to-order</span> • 2-3 months delivery
+          </p>
+          <button onClick={() => setNotificationDismissed(true)} className="text-gray-400 hover:text-white transition-colors">✕</button>
         </div>
-      )}
+      </div>
+    )}
 
-      {/* Hero Carousel - No Text, Minimalist CTA */}
-      <section className={`relative w-full h-[70vh] md:h-[85vh] overflow-hidden ${!notificationDismissed ? "mt-12" : ""}`}>
+    {/* Hero Slider - Aspect Ratio Fixed Logic */}
+    <section 
+      className={`relative w-full overflow-hidden transition-all duration-500 ${!notificationDismissed ? "mt-10" : "mt-0"}`}
+    >
+      <div className="relative w-full aspect-[4/5] md:aspect-[16/7] lg:aspect-[21/9] max-h-[750px]">
         {heroSlides.map((slide, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
               index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
             }`}
           >
             <Image
               src={slide.image || "/placeholder.svg"}
-              alt="Hero Collection"
+              alt="Collection Hero"
               fill
-              className="object-cover"
+              className="object-cover object-center"
               priority={index === 0}
+              sizes="100vw"
             />
             
-            {/* Minimalist Centered CTA Button */}
+            {/* Darkening overlay just for the bottom to make CTA pop */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+
+            {/* Minimalist Centered CTA */}
             <div className="absolute inset-0 flex items-center justify-center">
               <Link 
                 href={slide.link}
-                className="bg-white/90 hover:bg-white text-black text-[10px] md:text-xs tracking-[0.3em] uppercase px-8 py-4 backdrop-blur-sm transition-all duration-500 hover:px-12 opacity-0 animate-fade-in-up"
-                style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}
+                className="bg-white/90 hover:bg-white text-black text-[10px] md:text-xs tracking-[0.3em] uppercase px-8 py-3.5 md:py-4 backdrop-blur-sm transition-all duration-500 hover:scale-105"
               >
                 {slide.cta}
               </Link>
@@ -109,22 +111,22 @@ export default function HomePage() {
           </div>
         ))}
 
-        {/* Minimal Progress Indicators */}
-        <div className="absolute bottom-10 left-0 right-0 z-20 flex justify-center items-center gap-6">
+        {/* Minimal Pagination - Dots moved closer to bottom */}
+        <div className="absolute bottom-6 left-0 right-0 z-20 flex justify-center items-center gap-4">
           {heroSlides.map((_, index) => (
             <button
               key={index}
-              className="group relative py-4"
               onClick={() => setCurrentSlide(index)}
-            >
-              <div className={`h-[1px] transition-all duration-500 ${
-                index === currentSlide ? "w-12 bg-white" : "w-6 bg-white/30 group-hover:bg-white/60"
-              }`} />
-            </button>
+              className={`transition-all duration-300 rounded-full ${
+                index === currentSlide 
+                ? "w-8 h-[2px] bg-white" 
+                : "w-2 h-[2px] bg-white/40 hover:bg-white/60"
+              }`}
+            />
           ))}
         </div>
-      </section>
-
+      </div>
+    </section>
       {/* Signature Collections Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
