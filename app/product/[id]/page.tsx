@@ -104,8 +104,6 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
           <div className="space-y-6">
             <div>
               <h1 className="text-3xl md:text-4xl font-light tracking-widest mb-2">{product.name}</h1>
-              {product.collection && <p className="text-sm tracking-wide text-gray-500 mb-2">{product.collection}</p>}
-              {/* Price display removed */}
             </div>
 
             <p className="text-gray-600 leading-relaxed">{product.description}</p>
