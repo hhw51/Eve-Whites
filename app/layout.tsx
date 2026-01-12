@@ -6,6 +6,7 @@ import { ToastProvider } from "@/components/toast-provider"
 import Header from "@/components/layout/header"
 import Footer from "@/components/layout/footer"
 import OrderBotWidget from "@/components/order-bot-widget"
+import AnnouncementBar from "@/components/layout/announcement-bar"
 
 export const metadata: Metadata = {
   title: "Eve Whites - Luxury Bridal & Evening Wear | Pakistani Designer",
@@ -80,12 +81,13 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased overflow-x-hidden">
+      <body className="antialiased overflow-x-hidden bg-white">
         <ToastProvider>
           <FavoritesProvider>
-            <div className="min-h-screen flex flex-col w-full max-w-full">
+            <div className="min-h-screen flex flex-col w-full">
+              <AnnouncementBar />
               <Header />
-              <main className="flex-1 w-full max-w-full overflow-x-hidden">{children}</main>
+              <main className="flex-1 w-full">{children}</main>
               <Footer />
               <OrderBotWidget />
             </div>
