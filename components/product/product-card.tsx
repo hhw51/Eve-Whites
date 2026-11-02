@@ -4,8 +4,8 @@ import { useState } from "react"
 import type React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Heart } from "lucide-react"
-import { useFavorites } from "@/components/favorites/favorites-context"
+import { ShoppingBag, Check } from "lucide-react"
+import { useCart } from "@/components/cart/cart-context"
 import { useToast } from "@/components/toast-provider"
 
 interface Product {
@@ -24,30 +24,30 @@ export default function ProductCard({ product }: ProductCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
   const [imageError, setImageError] = useState(false)
-  const { isFavorited, addFavorite, removeFavorite } = useFavorites()
+  const [isAdded, setIsAdded] = useState(false)
+
+  const { addItem } = useCart()
   const { addToast } = useToast()
-  const [isFav, setIsFav] = useState(() => isFavorited(product.id))
 
   const handleImageError = () => {
     setImageError(true)
   }
 
-  const handleToggleFavorite = (e: React.MouseEvent) => {
+  const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
 
-    if (isFav) {
-      removeFavorite(product.id)
-      addToast("Removed from favorites", "info")
-    } else {
-      addFavorite({
-        id: product.id,
-        name: product.name,
-        image: product.images[0],
-      })
-      addToast(`${product.name} added to favorites!`, "success")
-    }
-    setIsFav(!isFav)
+    addItem({
+      productId: product.id,
+      name: product.name,
+      price: product.price || 80000,
+      image: product.images[0] || "/placeholder.svg",
+      quantity: 1,
+    })
+
+    setIsAdded(true)
+    setTimeout(() => setIsAdded(false), 1200)
+    addToast(`${product.name} added to your bespoke bag!`, "success")
   }
 
   return (
@@ -98,15 +98,21 @@ export default function ProductCard({ product }: ProductCardProps) {
             }`}
           />
 
-          {/* Heart button */}
+          {/* Shopping Bag Quick-Add Button */}
           <button
-            onClick={handleToggleFavorite}
-            aria-label="Toggle favorite"
-            className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-300 ${
-              isFav ? "bg-red-500 text-white" : "bg-white/90 text-gray-800 hover:bg-white shadow-sm"
+            onClick={handleAddToCart}
+            aria-label={`Add ${product.name} to bag`}
+            className={`absolute top-3 right-3 p-2.5 rounded-full transition-all duration-300 shadow-md ${
+              isAdded
+                ? "bg-black text-white scale-110"
+                : "bg-white/95 text-gray-900 hover:bg-black hover:text-white hover:scale-110"
             }`}
           >
-            <Heart className={`w-4 h-4 ${isFav ? "fill-current" : ""}`} />
+            {isAdded ? (
+              <Check className="w-4 h-4 text-white" />
+            ) : (
+              <ShoppingBag className="w-4 h-4 stroke-[1.8]" />
+            )}
           </button>
         </div>
 
