@@ -10,53 +10,70 @@ interface FAQItem {
 }
 
 const faqData: FAQItem[] = [
+  // Ordering & Consultation
   {
-    category: "Shipping",
-    question: "How long does shipping take?",
+    category: "Ordering",
+    question: "How do I place an order with Eve Whites?",
     answer:
-      "We offer free standard shipping on all orders over $100. Standard shipping typically takes 3-5 business days within the US. Express shipping (1-2 business days) is available for an additional fee.",
+      "All Eve Whites pieces are exclusively made-to-order. To begin your journey, you can schedule a consultation directly through our website, reach out via WhatsApp at +92 325 0948136, or email us at info@evewhites.com. Our design team will guide you through fabric selection, custom measurements, and design personalisation.",
   },
   {
-    category: "Shipping",
-    question: "Do you ship internationally?",
+    category: "Ordering",
+    question: "Can I request a fully custom design?",
     answer:
-      "Yes, we ship to most countries worldwide. International shipping costs and delivery times vary by destination. Please note that customs duties and taxes may apply.",
+      "Absolutely. Bespoke customisation is at the heart of what we do. Whether you wish to modify an existing silhouette from our collection or commission an entirely original piece, our atelier works closely with you to bring your vision to life — from neckline and fabric to embellishment and train length.",
   },
+  // Measurements & Sizing
   {
-    category: "Returns",
-    question: "What is your return policy?",
+    category: "Sizing",
+    question: "How are measurements taken for a custom piece?",
     answer:
-      "We accept returns within 30 days of purchase for unworn items in original condition with tags attached. Returns are free for US customers, and we provide a prepaid return label.",
-  },
-  {
-    category: "Returns",
-    question: "How do I return an item?",
-    answer:
-      "To return an item, log into your account and select the order you wish to return. Follow the prompts to print your return label and drop off the package at any authorized shipping location.",
+      "We require six key measurements: bust, waist, hips, shoulder width, total length, and sleeve length (if applicable), all in centimetres. You can provide these measurements yourself using our size guide, or visit our studio for a professional fitting session. Our consultants will advise you on any adjustments needed to achieve a perfect, flattering fit.",
   },
   {
     category: "Sizing",
-    question: "How do I find my size?",
+    question: "What if my measurements change before delivery?",
     answer:
-      "We provide detailed size charts for each product. We recommend measuring yourself and comparing to our size guide. If you're between sizes, we generally recommend sizing up for a more comfortable fit.",
+      "We recommend providing your measurements as close to the order confirmation date as possible. If your measurements change significantly during the 2–3 month production period, please notify us immediately. Minor alterations can often be accommodated at no additional cost, while more significant changes may require a revised timeline.",
+  },
+  // Delivery & Timeline
+  {
+    category: "Delivery",
+    question: "How long does it take to receive my order?",
+    answer:
+      "As each garment is handcrafted to your exact specifications, our standard production timeline is 2 to 3 months from the date of order confirmation and receipt of your measurements. For rush orders or peak bridal seasons (particularly October–January), we recommend reaching out at least 4 months in advance to ensure timely delivery.",
   },
   {
-    category: "Sizing",
-    question: "Do your clothes run true to size?",
+    category: "Delivery",
+    question: "Do you deliver internationally?",
     answer:
-      "Our garments are designed to fit true to size based on our size charts. However, fit can vary by style. We include specific fit notes on each product page to help you choose the best size.",
+      "Yes, we ship worldwide. International orders are dispatched via insured, tracked courier services to ensure your ensemble arrives safely. Delivery charges and import duties vary by destination country and will be communicated at the time of order. Please allow an additional 5–10 business days for international transit.",
+  },
+  // Payment
+  {
+    category: "Payment",
+    question: "What are your payment terms?",
+    answer:
+      "We require a 50% advance payment at the time of order confirmation to begin the production process. The remaining 50% is due upon completion, prior to dispatch. Payments can be made via bank transfer or other agreed methods. For international clients, our team will provide the appropriate payment details during consultation.",
   },
   {
-    category: "Orders",
-    question: "Can I modify or cancel my order?",
+    category: "Payment",
+    question: "Are prices listed on the website?",
     answer:
-      "Orders can be modified or cancelled within 1 hour of placement. After this time, orders enter our fulfillment process and cannot be changed. Please contact us immediately if you need to make changes.",
+      "Prices are not listed publicly as each piece is priced according to the fabric, level of embellishment, and degree of customisation involved. We provide a detailed quotation after your initial consultation. Our collections represent a range of investment levels to accommodate different budgets without compromising on craftsmanship.",
+  },
+  // Care & Returns
+  {
+    category: "Care & Returns",
+    question: "What is your return and alteration policy?",
+    answer:
+      "Because every garment is custom-made to your precise measurements and design specifications, we are unable to accept returns or exchanges. However, we stand fully behind the quality of our work. Should you find any craftsmanship issue upon receipt, please contact us within 48 hours and we will make it right. Minor fitting adjustments once the garment is received can be arranged at our studio.",
   },
   {
-    category: "Orders",
-    question: "How can I track my order?",
+    category: "Care & Returns",
+    question: "How should I care for my Eve Whites garment?",
     answer:
-      "Once your order ships, you'll receive a tracking number via email. You can also track your order by logging into your account and viewing your order history.",
+      "We recommend professional dry cleaning only, using a specialist in bridal or couture garments. Store your piece on a padded, wide-shouldered hanger in a breathable garment bag, away from direct sunlight and moisture. Avoid contact with perfumes, hairspray, and sharp jewellery, which can damage delicate embellishments and fabrics.",
   },
 ]
 
@@ -78,7 +95,9 @@ export default function FAQPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
           <h1 className="text-3xl md:text-4xl font-light tracking-widest mb-4">FREQUENTLY ASKED QUESTIONS</h1>
-          <p className="text-gray-600">Find answers to common questions about our products, shipping, and policies.</p>
+          <p className="text-gray-600">
+            Everything you need to know about ordering a bespoke Eve Whites ensemble.
+          </p>
         </div>
 
         {/* Category Filter */}
@@ -109,7 +128,7 @@ export default function FAQPage() {
                   <h3 className="font-medium mt-1">{item.question}</h3>
                 </div>
                 <ChevronDown
-                  className={`w-5 h-5 text-gray-400 transition-transform ${
+                  className={`w-5 h-5 text-gray-400 transition-transform flex-shrink-0 ml-4 ${
                     openItems.includes(index) ? "rotate-180" : ""
                   }`}
                 />
@@ -128,14 +147,19 @@ export default function FAQPage() {
         <div className="mt-16 text-center bg-gray-50 p-8 rounded-lg">
           <h2 className="font-medium mb-4 tracking-wide">STILL HAVE QUESTIONS?</h2>
           <p className="text-gray-600 mb-6">
-            Can't find what you're looking for? Our customer service team is here to help.
+            Our consultants are here to guide you through every step of the bespoke process.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/contact" className="btn-primary">
-              Contact Us
+            <a
+              href="https://wa.me/923250948136"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary"
+            >
+              Chat on WhatsApp
             </a>
-            <a href="mailto:hello@evewhites.com" className="btn-secondary">
-              Email Support
+            <a href="/contact" className="btn-secondary">
+              Send a Message
             </a>
           </div>
         </div>

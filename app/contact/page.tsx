@@ -13,16 +13,32 @@ export default function ContactPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setSubmitError(null)
 
-    setTimeout(() => {
-      setIsSubmitting(false)
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}))
+        throw new Error(data.error || "Failed to send message. Please try again.")
+      }
+
       setSubmitted(true)
       setFormData({ name: "", email: "", message: "" })
-    }, 1000)
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : "Something went wrong. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -109,6 +125,12 @@ export default function ContactPage() {
                 >
                   {isSubmitting ? "Sending..." : "Send Message"}
                 </button>
+
+                {submitError && (
+                  <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+                    {submitError}
+                  </div>
+                )}
               </form>
             )}
           </div>

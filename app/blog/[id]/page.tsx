@@ -24,11 +24,12 @@ export default function BlogPostPage({ params }: { params: Promise<{ id: string 
   useEffect(() => {
     const loadBlogPost = async () => {
       try {
-        const response = await fetch("/api/blog-posts")
+        const response = await fetch(`/api/blog-posts/${id}`)
         if (response.ok) {
-          const data: BlogPost[] = await response.json()
-          const foundPost = data.find((p) => p.id === id)
-          setBlogPost(foundPost || null)
+          const data: BlogPost = await response.json()
+          setBlogPost(data)
+        } else {
+          setBlogPost(null)
         }
       } catch (error) {
         console.error("Error loading blog post:", error)
@@ -53,7 +54,8 @@ export default function BlogPostPage({ params }: { params: Promise<{ id: string 
       <div className="pt-16 lg:pt-20 min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-light tracking-wide mb-4">Post Not Found</h1>
-          <p className="text-gray-600">The blog post you're looking for doesn't exist.</p>
+          <p className="text-gray-600 mb-6">The blog post you&apos;re looking for doesn&apos;t exist.</p>
+          <Link href="/blog" className="btn-primary">Back to Journal</Link>
         </div>
       </div>
     )
@@ -82,7 +84,17 @@ export default function BlogPostPage({ params }: { params: Promise<{ id: string 
               <span className="mx-2">•</span>
               <span>{blogPost.readTime}</span>
             </div>
-            <button className="flex items-center space-x-2 hover:text-black transition-colors">
+            <button
+              onClick={async () => {
+                const url = window.location.href
+                if (navigator.share) {
+                  try { await navigator.share({ title: blogPost.title, url }) } catch (_) {}
+                } else {
+                  await navigator.clipboard.writeText(url)
+                }
+              }}
+              className="flex items-center space-x-2 hover:text-black transition-colors"
+            >
               <Share2 className="w-4 h-4" />
               <span>Share</span>
             </button>
@@ -104,10 +116,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ id: string 
         <div
           className="prose prose-lg max-w-none"
           dangerouslySetInnerHTML={{ __html: blogPost.content }}
-          style={{
-            lineHeight: "1.8",
-            color: "#374151",
-          }}
+          style={{ lineHeight: "1.8", color: "#374151" }}
         />
 
         {/* Article Footer */}
@@ -117,34 +126,23 @@ export default function BlogPostPage({ params }: { params: Promise<{ id: string 
               <p className="text-sm text-gray-600 mb-2">Written by</p>
               <p className="font-medium">{blogPost.author}</p>
             </div>
-            <button className="btn-secondary">Follow for More</button>
+            <Link href="/blog" className="btn-secondary">
+              More Articles
+            </Link>
           </div>
         </footer>
       </article>
 
-      {/* Related Posts */}
+      {/* Back to Journal CTA */}
       <section className="bg-gray-50 py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-light tracking-wide mb-8 text-center">Related Articles</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Placeholder for related posts */}
-            {[1, 2, 3].map((i) => (
-              <Link key={i} href={`/blog/${i + 1}`} className="group">
-                <div className="relative h-48 mb-4 overflow-hidden rounded-lg">
-                  <Image
-                    src={`/placeholder.svg?height=300&width=400`}
-                    alt={`Related post ${i}`}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-                <h3 className="font-medium mb-2 group-hover:text-gray-600 transition-colors">
-                  Related Article Title {i}
-                </h3>
-                <p className="text-gray-600 text-sm">Brief excerpt of the related article content...</p>
-              </Link>
-            ))}
-          </div>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-2xl font-light tracking-wide mb-4">Explore Our Journal</h2>
+          <p className="text-gray-600 mb-8">
+            Discover more stories, style guides, and behind-the-scenes insights from Eve Whites.
+          </p>
+          <Link href="/blog" className="btn-primary">
+            View All Articles
+          </Link>
         </div>
       </section>
     </div>

@@ -1,5 +1,6 @@
 "use client"
 
+import type React from "react"
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -18,6 +19,19 @@ export default function HomePage() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [newsletterEmail, setNewsletterEmail] = useState("")
+  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "success" | "error">("idle")
+
+  const handleNewsletterSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!newsletterEmail || !newsletterEmail.includes("@")) {
+      setNewsletterStatus("error")
+      return
+    }
+    // Submission acknowledged — integrate with email service (e.g. Mailchimp) in future
+    setNewsletterStatus("success")
+    setNewsletterEmail("")
+  }
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -170,10 +184,27 @@ export default function HomePage() {
       <section className="py-20 bg-black text-white">
         <div className="max-w-xl mx-auto text-center px-6">
           <h2 className="text-xl md:text-2xl font-light tracking-[0.3em] mb-8 uppercase">Stay Enchanted</h2>
-          <div className="flex flex-col gap-4">
-            <input type="email" placeholder="EMAIL ADDRESS" className="bg-transparent border-b border-gray-800 py-4 text-center text-xs tracking-[0.2em] focus:outline-none focus:border-white transition-colors" />
-            <button className="text-[10px] tracking-[0.3em] mt-4 hover:text-gray-400 transition-colors uppercase">Subscribe</button>
-          </div>
+          {newsletterStatus === "success" ? (
+            <p className="text-sm tracking-[0.2em] text-gray-300 animate-fade-in">
+              Thank you for subscribing. We&apos;ll be in touch soon.
+            </p>
+          ) : (
+            <form onSubmit={handleNewsletterSubmit} className="flex flex-col gap-4">
+              <input
+                type="email"
+                value={newsletterEmail}
+                onChange={(e) => { setNewsletterEmail(e.target.value); setNewsletterStatus("idle") }}
+                placeholder="EMAIL ADDRESS"
+                className="bg-transparent border-b border-gray-800 py-4 text-center text-xs tracking-[0.2em] focus:outline-none focus:border-white transition-colors"
+              />
+              {newsletterStatus === "error" && (
+                <p className="text-red-400 text-xs tracking-wide">Please enter a valid email address.</p>
+              )}
+              <button type="submit" className="text-[10px] tracking-[0.3em] mt-4 hover:text-gray-400 transition-colors uppercase">
+                Subscribe
+              </button>
+            </form>
+          )}
         </div>
       </section>
     </div>

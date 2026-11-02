@@ -5,6 +5,8 @@ import { use } from "react"
 import Image from "next/image"
 import { Heart, Share2 } from "lucide-react"
 import ConsultationModal from "@/components/consultation-modal"
+import { useFavorites } from "@/components/favorites/favorites-context"
+import { useToast } from "@/components/toast-provider"
 
 interface Product {
   id: string
@@ -22,15 +24,18 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
   const [product, setProduct] = useState<Product | null>(null)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [loading, setLoading] = useState(true)
+  const { isFavorited, addFavorite, removeFavorite } = useFavorites()
+  const { addToast } = useToast()
 
   useEffect(() => {
     const loadProduct = async () => {
       try {
-        const response = await fetch("/api/products")
+        const response = await fetch(`/api/products/${id}`)
         if (response.ok) {
-          const data: Product[] = await response.json()
-          const foundProduct = data.find((p) => p.id === id)
-          setProduct(foundProduct || null)
+          const data: Product = await response.json()
+          setProduct(data)
+        } else {
+          setProduct(null)
         }
       } catch (error) {
         console.error("Error loading product:", error)
@@ -125,11 +130,37 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
             <ConsultationModal />
 
             <div className="flex gap-4">
-              <button className="flex-1 border border-gray-300 text-gray-700 px-6 py-3 font-medium tracking-wide hover:border-black transition-colors flex items-center justify-center space-x-2">
-                <Heart className="w-4 h-4" />
-                <span>Add to Favorites</span>
+              <button
+                onClick={() => {
+                  if (isFavorited(product.id)) {
+                    removeFavorite(product.id)
+                    addToast("Removed from favorites", "info")
+                  } else {
+                    addFavorite({ id: product.id, name: product.name, image: product.images[0] })
+                    addToast(`${product.name} added to favorites!`, "success")
+                  }
+                }}
+                className={`flex-1 px-6 py-3 font-medium tracking-wide transition-colors flex items-center justify-center space-x-2 border ${
+                  isFavorited(product.id)
+                    ? "bg-red-500 border-red-500 text-white hover:bg-red-600"
+                    : "border-gray-300 text-gray-700 hover:border-black"
+                }`}
+              >
+                <Heart className={`w-4 h-4 ${isFavorited(product.id) ? "fill-current" : ""}`} />
+                <span>{isFavorited(product.id) ? "Saved to Favorites" : "Add to Favorites"}</span>
               </button>
-              <button className="flex-1 border border-gray-300 text-gray-700 px-6 py-3 font-medium tracking-wide hover:border-black transition-colors flex items-center justify-center space-x-2">
+              <button
+                onClick={async () => {
+                  const url = window.location.href
+                  if (navigator.share) {
+                    try { await navigator.share({ title: product.name, url }) } catch {}
+                  } else {
+                    await navigator.clipboard.writeText(url)
+                    addToast("Link copied to clipboard", "success")
+                  }
+                }}
+                className="flex-1 border border-gray-300 text-gray-700 px-6 py-3 font-medium tracking-wide hover:border-black transition-colors flex items-center justify-center space-x-2"
+              >
                 <Share2 className="w-4 h-4" />
                 <span>Share</span>
               </button>
