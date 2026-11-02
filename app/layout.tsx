@@ -2,11 +2,13 @@ import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
 import { FavoritesProvider } from "@/components/favorites/favorites-context"
+import { CartProvider } from "@/components/cart/cart-context"
 import { ToastProvider } from "@/components/toast-provider"
 import Header from "@/components/layout/header"
 import Footer from "@/components/layout/footer"
 import OrderBotWidget from "@/components/order-bot-widget"
 import AnnouncementBar from "@/components/layout/announcement-bar"
+import CartDrawer from "@/components/cart/cart-drawer"
 
 export const metadata: Metadata = {
   title: "Eve Whites - Luxury Bridal & Evening Wear | Pakistani Designer",
@@ -46,7 +48,7 @@ export const metadata: Metadata = {
     description: "Avant-garde bridal wear for the modern Pakistani bride",
   },
   viewport: "width=device-width, initial-scale=1, maximum-scale=1",
-    generator: 'v0.app'
+  generator: "v0.app",
 }
 
 export default function RootLayout({
@@ -84,13 +86,16 @@ export default function RootLayout({
       <body className="antialiased overflow-x-hidden bg-white">
         <ToastProvider>
           <FavoritesProvider>
-            <div className="min-h-screen flex flex-col w-full">
-              <AnnouncementBar />
-              <Header />
-              <main className="flex-1 w-full">{children}</main>
-              <Footer />
-              <OrderBotWidget />
-            </div>
+            <CartProvider>
+              <div className="min-h-screen flex flex-col w-full">
+                <AnnouncementBar />
+                <Header />
+                <main className="flex-1 w-full">{children}</main>
+                <Footer />
+                <OrderBotWidget />
+                <CartDrawer />
+              </div>
+            </CartProvider>
           </FavoritesProvider>
         </ToastProvider>
       </body>

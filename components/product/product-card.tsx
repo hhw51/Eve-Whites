@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-
 import type React from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -12,6 +11,7 @@ import { useToast } from "@/components/toast-provider"
 interface Product {
   id: string
   name: string
+  price?: number
   images: string[]
   description: string
 }
@@ -57,7 +57,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       onMouseLeave={() => setIsHovered(false)}
     >
       <Link href={`/product/${product.id}`}>
-        <div className="relative overflow-hidden bg-gray-50 aspect-[3/4] mb-4">
+        <div className="relative overflow-hidden bg-gray-50 aspect-[3/4] mb-3">
           <Image
             src={
               imageError
@@ -67,7 +67,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             alt={product.name}
             fill
             className={`product-image object-cover transition-all duration-700 ${
-              isHovered ? "scale-110" : "scale-100"
+              isHovered ? "scale-105" : "scale-100"
             }`}
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
             onError={handleImageError}
@@ -79,8 +79,8 @@ export default function ProductCard({ product }: ProductCardProps) {
               {product.images.map((_, index) => (
                 <button
                   key={index}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    index === currentImageIndex ? "bg-black" : "bg-white/50"
+                  className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                    index === currentImageIndex ? "bg-black w-4" : "bg-white/70"
                   }`}
                   onClick={(e) => {
                     e.preventDefault()
@@ -93,24 +93,41 @@ export default function ProductCard({ product }: ProductCardProps) {
 
           {/* Hover overlay */}
           <div
-            className={`absolute inset-0 bg-black/10 transition-opacity duration-300 ${
+            className={`absolute inset-0 bg-black/5 transition-opacity duration-300 ${
               isHovered ? "opacity-100" : "opacity-0"
             }`}
           />
 
+          {/* Heart button */}
           <button
             onClick={handleToggleFavorite}
-            className={`absolute top-4 right-4 p-2 rounded-full transition-all duration-300 ${
-              isFav ? "bg-red-500 text-white" : "bg-white/90 text-gray-800 hover:bg-white"
+            aria-label="Toggle favorite"
+            className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-300 ${
+              isFav ? "bg-red-500 text-white" : "bg-white/90 text-gray-800 hover:bg-white shadow-sm"
             }`}
           >
-            <Heart className={`w-5 h-5 ${isFav ? "fill-current" : ""}`} />
+            <Heart className={`w-4 h-4 ${isFav ? "fill-current" : ""}`} />
           </button>
         </div>
 
-        <div className="space-y-2">
-          <h3 className="font-medium text-sm tracking-wide uppercase">{product.name}</h3>
-          <p className="text-gray-600 text-xs">Made to Order</p>
+        {/* Product Info & Pricing */}
+        <div className="space-y-1">
+          <div className="flex items-center justify-between">
+            <h3 className="font-light text-xs sm:text-sm tracking-[0.15em] uppercase text-gray-900 group-hover:text-gray-600 transition-colors">
+              {product.name}
+            </h3>
+            <span className="text-[10px] uppercase tracking-wider text-gray-400">
+              Made-to-Order
+            </span>
+          </div>
+          <div className="flex items-center justify-between text-xs pt-0.5">
+            <span className="font-normal text-black tracking-wide">
+              {product.price ? `Rs. ${product.price.toLocaleString()}` : "Price Upon Inquiry"}
+            </span>
+            <span className="text-[11px] text-gray-400 group-hover:text-black transition-colors">
+              View Atelier →
+            </span>
+          </div>
         </div>
       </Link>
     </div>

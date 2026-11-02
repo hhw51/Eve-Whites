@@ -1,7 +1,8 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { Filter } from "lucide-react"
+import { useEffect, useState, Suspense } from "react"
+import { useSearchParams } from "next/navigation"
+import { Filter, X } from "lucide-react"
 import ProductCard from "@/components/product/product-card"
 
 interface Product {
@@ -11,12 +12,16 @@ interface Product {
   category: string
   images: string[]
   description: string
-  sizes: string[]
+  sizes?: string[]
   featured: boolean
   collection: string
+  tags?: string[]
 }
 
-export default function ShopPage() {
+function ShopContent() {
+  const searchParams = useSearchParams()
+  const searchQuery = searchParams.get("q") || ""
+
   const [products, setProducts] = useState<Product[]>([])
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
   const [selectedCategory, setSelectedCategory] = useState("all")
@@ -32,7 +37,6 @@ export default function ShopPage() {
         if (response.ok) {
           const data = await response.json()
           setProducts(data)
-          setFilteredProducts(data)
         }
       } catch (error) {
         console.error("Error loading products:", error)
@@ -46,6 +50,18 @@ export default function ShopPage() {
 
   useEffect(() => {
     let filtered = products
+
+    // Search query filter
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim()
+      filtered = filtered.filter(
+        (p) =>
+          p.name.toLowerCase().includes(q) ||
+          p.description?.toLowerCase().includes(q) ||
+          p.collection?.toLowerCase().includes(q) ||
+          p.tags?.some((t) => t.toLowerCase().includes(q))
+      )
+    }
 
     // Filter by category
     if (selectedCategory !== "all") {
@@ -71,42 +87,55 @@ export default function ShopPage() {
     })
 
     setFilteredProducts(filtered)
-  }, [products, selectedCategory, selectedCollection, sortBy])
+  }, [products, selectedCategory, selectedCollection, sortBy, searchQuery])
 
   const categories = ["all", ...Array.from(new Set(products.map((p) => p.category)))]
   const collections = ["all", ...Array.from(new Set(products.map((p) => p.collection)))]
 
   if (loading) {
     return (
-      <div className="pt-16 lg:pt-20 min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
+      <div className="pt-20 min-h-[60vh] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-black"></div>
       </div>
     )
   }
 
   return (
-    <div className="pt-16 lg:pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="pt-6 lg:pt-8 pb-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Header */}
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
           <div>
-            <h1 className="text-3xl md:text-4xl font-light tracking-widest mb-2">COLLECTIONS</h1>
-            <p className="text-gray-600">Discover our exquisite bridal and evening wear</p>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-light tracking-[0.2em] mb-2 uppercase text-black">
+              Collections
+            </h1>
+            <p className="text-gray-500 text-xs sm:text-sm tracking-wide">
+              Exclusively handcrafted bespoke bridal & couture evening wear
+            </p>
+
+            {searchQuery && (
+              <div className="mt-3 flex items-center gap-2">
+                <span className="text-xs text-gray-500">Search results for:</span>
+                <span className="text-xs font-semibold px-2 py-0.5 bg-gray-100 rounded text-black flex items-center gap-1">
+                  "{searchQuery}"
+                </span>
+              </div>
+            )}
           </div>
 
-          <div className="flex items-center space-x-4 mt-4 lg:mt-0">
+          <div className="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-end">
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="lg:hidden flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded"
+              className="lg:hidden flex items-center space-x-2 px-3 py-2 border border-gray-300 rounded text-xs uppercase tracking-wider font-medium"
             >
-              <Filter className="w-4 h-4" />
+              <Filter className="w-3.5 h-3.5" />
               <span>Filters</span>
             </button>
 
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-black"
+              className="px-3 py-2 border border-gray-300 rounded text-xs tracking-wider uppercase focus:outline-none focus:border-black bg-white"
             >
               <option value="name">Sort by Name</option>
               <option value="price-low">Price: Low to High</option>
@@ -117,34 +146,42 @@ export default function ShopPage() {
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters Sidebar */}
-          <div className={`lg:w-64 ${showFilters ? "block" : "hidden lg:block"}`}>
-            <div className="bg-white lg:bg-transparent p-4 lg:p-0 border lg:border-0 rounded lg:rounded-none space-y-6">
+          <div className={`lg:w-60 flex-shrink-0 ${showFilters ? "block" : "hidden lg:block"}`}>
+            <div className="bg-white lg:bg-transparent p-4 lg:p-0 border lg:border-0 rounded space-y-6">
               <div>
-                <h3 className="font-medium mb-4 tracking-wide">CATEGORIES</h3>
-                <div className="space-y-2">
+                <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-900 mb-3">
+                  Categories
+                </h3>
+                <div className="space-y-1">
                   {categories.map((category) => (
                     <button
                       key={category}
                       onClick={() => setSelectedCategory(category)}
-                      className={`block w-full text-left px-3 py-2 text-sm transition-colors ${
-                        selectedCategory === category ? "bg-black text-white" : "hover:bg-gray-100"
+                      className={`block w-full text-left px-3 py-2 text-xs tracking-wider uppercase transition-colors rounded ${
+                        selectedCategory === category
+                          ? "bg-black text-white font-medium"
+                          : "text-gray-600 hover:bg-gray-100"
                       }`}
                     >
-                      {category.charAt(0).toUpperCase() + category.slice(1)}
+                      {category === "all" ? "All Categories" : category}
                     </button>
                   ))}
                 </div>
               </div>
 
               <div>
-                <h3 className="font-medium mb-4 tracking-wide">COLLECTIONS</h3>
-                <div className="space-y-2">
+                <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-900 mb-3">
+                  Collections
+                </h3>
+                <div className="space-y-1">
                   {collections.map((collection) => (
                     <button
                       key={collection}
                       onClick={() => setSelectedCollection(collection)}
-                      className={`block w-full text-left px-3 py-2 text-sm transition-colors ${
-                        selectedCollection === collection ? "bg-black text-white" : "hover:bg-gray-100"
+                      className={`block w-full text-left px-3 py-2 text-xs tracking-wider uppercase transition-colors rounded ${
+                        selectedCollection === collection
+                          ? "bg-black text-white font-medium"
+                          : "text-gray-600 hover:bg-gray-100"
                       }`}
                     >
                       {collection === "all" ? "All Collections" : collection}
@@ -157,22 +194,43 @@ export default function ShopPage() {
 
           {/* Products Grid */}
           <div className="flex-1">
-            <div className="mb-4 text-sm text-gray-600">Showing {filteredProducts.length} pieces</div>
+            <div className="mb-4 text-xs text-gray-500 uppercase tracking-wider">
+              Showing {filteredProducts.length} {filteredProducts.length === 1 ? "Piece" : "Pieces"}
+            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
               {filteredProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
 
             {filteredProducts.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-gray-500">No pieces found matching your criteria.</p>
+              <div className="text-center py-16 bg-gray-50 rounded-lg">
+                <p className="text-sm uppercase tracking-wider text-gray-600 font-medium mb-1">
+                  No pieces found
+                </p>
+                <p className="text-xs text-gray-400">
+                  Try adjusting your filters or search keywords.
+                </p>
               </div>
             )}
           </div>
         </div>
       </div>
     </div>
+  )
+}
+
+export default function ShopPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="pt-20 min-h-[60vh] flex items-center justify-center">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-black"></div>
+        </div>
+      }
+    >
+      <ShopContent />
+    </Suspense>
   )
 }

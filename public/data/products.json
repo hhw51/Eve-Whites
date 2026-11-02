@@ -2,6 +2,7 @@
   {
     "id": "1",
     "name": "June",
+    "price": 70000,
     "category": "bridal",
     "images": [
       "/docs/dress1/image1.jpg",
@@ -19,6 +20,7 @@
   {
     "id": "2",
     "name": "Aurelia",
+    "price": 80000,
     "category": "bridal",
     "images": [
       "/docs/dress2/image1.jpg",
@@ -37,6 +39,7 @@
   {
     "id": "3",
     "name": "Maren",
+    "price": 80000,
     "category": "bridal",
     "images": [
       "/docs/dress3/image1.jpg",
@@ -54,6 +57,7 @@
   {
     "id": "4",
     "name": "White Rose",
+    "price": 70000,
     "category": "bridal",
     "images": [
       "/docs/dress4/image1.jpg",
@@ -71,6 +75,7 @@
   {
     "id": "5",
     "name": "Ruffles Cascade",
+    "price": 70000,
     "category": "evening",
     "images": [
       "/docs/dress5/image1.jpg",
@@ -88,6 +93,7 @@
   {
     "id": "6",
     "name": "Étoile Satinée",
+    "price": 100000,
     "category": "bridal",
     "images": [
       "/docs/dress6/image1.jpg",
@@ -105,6 +111,7 @@
   {
     "id": "7",
     "name": "Ruby's Touch",
+    "price": 120000,
     "category": "bridal",
     "images": [
       "/docs/dress7/image1.jpg",

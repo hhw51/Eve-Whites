@@ -9,6 +9,7 @@ import ProductCard from "@/components/product/product-card"
 interface Product {
   id: string
   name: string
+  price?: number
   images: string[]
   description: string
   featured: boolean
