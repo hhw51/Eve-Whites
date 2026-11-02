@@ -78,13 +78,8 @@ export default function HomePage() {
   return (
     <div className="w-full bg-white">
       {/* Hero Slider Section */}
-      <section className="relative w-full overflow-hidden">
-        {/* DILEMMA SOLVED:
-          Mobile (sm): aspect-[4/5] - Shows the full vertical dress/model.
-          Tablet (md): aspect-[16/9] - Balanced horizontal fit.
-          Desktop (lg): max-h-[550px] + aspect-[21/9] - Slim luxury banner.
-        */}
-        <div className="relative w-full aspect-[4/5] md:aspect-[16/9] lg:aspect-[21/9] lg:max-h-[550px]">
+      <section className="relative w-full overflow-hidden bg-white">
+        <div className="relative w-full aspect-[1920/650]">
           {heroSlides.map((slide, index) => (
             <Link
               key={index}
@@ -93,15 +88,12 @@ export default function HomePage() {
                 index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
               }`}
             >
-              <div className="relative w-full h-full overflow-hidden bg-[#f9f9f9]">
+              <div className="relative w-full h-full overflow-hidden bg-white">
                 <Image
                   src={slide.image || "/placeholder.svg"}
                   alt="Eve Whites Collection"
                   fill
-                  /* 'object-contain' on small screens ensures NO parts of your image are cropped.
-                    'object-cover' on md+ ensures the banner is filled side-to-side.
-                  */
-                  className="object-contain md:object-cover object-center transition-transform duration-[4000ms] group-hover:scale-105"
+                  className="object-cover object-center transition-transform duration-[4000ms] group-hover:scale-105"
                   priority={index === 0}
                   sizes="100vw"
                 />
@@ -110,13 +102,13 @@ export default function HomePage() {
           ))}
 
           {/* Indicators */}
-          <div className="absolute bottom-6 left-0 right-0 z-20 flex justify-center items-center gap-2">
+          <div className="absolute bottom-2 sm:bottom-4 md:bottom-6 left-0 right-0 z-20 flex justify-center items-center gap-2">
             {heroSlides.map((_, index) => (
               <button
                 key={index}
                 onClick={(e) => { e.preventDefault(); setCurrentSlide(index); }}
-                className={`transition-all duration-500 h-[1px] ${
-                  index === currentSlide ? "w-10 bg-black/80" : "w-4 bg-black/20"
+                className={`transition-all duration-500 h-[1.5px] ${
+                  index === currentSlide ? "w-8 sm:w-10 bg-black/80" : "w-3 sm:w-4 bg-black/30"
                 }`}
               />
             ))}
@@ -125,7 +117,7 @@ export default function HomePage() {
       </section>
 
       {/* Signature Collections */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+      <section className="py-10 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
             <div className="max-w-xl">
